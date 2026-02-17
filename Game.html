@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4f46e5">
+    <title>Relationship Dashboard 📊</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --sidebar-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --primary: #4f46e5;
+            --accent: #ec4899;
+            --success: #10b981;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #111827;
+                --sidebar-bg: #1f2937;
+                --text-main: #f9fafb;
+                --text-muted: #9ca3af;
+                --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-main); }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile First */
+            min-height: 100vh;
+        }
+
+        /* Sidebar hidden on mobile by default */
+        .sidebar {
+            display: none; 
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            overflow-y: auto;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: var(--sidebar-bg);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 12px;
+            padding-bottom: 80px;
+        }
+
+        .grid-item {
+            background-color: var(--sidebar-bg);
+            aspect-ratio: 1;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            border: 2px solid transparent;
+            color: var(--primary);
+        }
+
+        .grid-item:active { transform: scale(0.95); }
+        
+        .grid-item.used {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: none;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+        }
+
+        .modal.open { opacity: 1; pointer-events: all; }
+
+        .modal-card {
+            background: var(--sidebar-bg);
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-badge {
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .question-text { font-size: 1.3rem; line-height: 1.5; margin-bottom: 30px; font-weight: 500;}
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 0;
+            width: 100%;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 769px) {
+            .dashboard-container { grid-template-columns: 250px 1fr; }
+            .sidebar { display: flex; height: 100vh; position: sticky; top: 0; flex-direction: column; }
+            .header { display: none; } /* Use sidebar on desktop */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar (Desktop) -->
+        <aside class="sidebar">
+            <h2 style="color: var(--primary);">❤️ Connection</h2>
+            <div style="margin-top: 20px;">
+                <p>Progress: <span id="deskProgress">0%</span></p>
+                <div style="background: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
+                    <div id="deskBar" style="width: 0%; height: 100%; background: var(--primary);"></div>
+                </div>
+            </div>
+            <button onclick="resetDashboard()" style="margin-top: auto; padding: 10px; background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 8px; cursor: pointer;">Reset Game</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Mobile Header -->
+            <div class="header">
+                <strong>Question Game</strong>
+                <span id="mobProgress" style="font-size: 0.9rem; color: var(--primary); font-weight: bold;">0/40</span>
+            </div>
+
+            <div class="game-grid" id="grid">
+                <!-- Grid Items JS -->
+            </div>
+            
+             <div style="text-align: center; margin-top: 30px; opacity: 0.7;">
+                <button onclick="resetDashboard()" style="background: transparent; border: none; color: #ef4444; font-size: 0.8rem; text-decoration: underline;">Reset Progress</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Question Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-card">
+            <div class="category-badge" id="mCategory">Topic</div>
+            <h3 id="mNumber" style="color: var(--primary); margin: 0 0 10px 0;">#</h3>
+            <p class="question-text" id="mText">...</p>
+            <button class="btn" onclick="closeModal()">Mark as Done</button>
+            <button onclick="closeModalOnly()" style="background: transparent; border: none; color: var(--text-muted); margin-top: 15px; font-size: 0.9rem;">Close (Don't Mark)</button>
+        </div>
+    </div>
+
+    <script>
+        const db = [
+            { id: 1, cat: "Personality", q: "በህይወትሽ በጣም ደስተኛ የሚያደርግሽ ነገር ምንድን ነው?" },
+            { id: 2, cat: "Personality", q: "በራስሽ በጣም የምትኮሪበት ነገር ምንድን ነው?" },
+            { id: 3, cat: "Personality", q: "ሰዎች ስለ አንቺ አብዛኛው ጊዜ በተሳሳተ መንገድ የሚረዱት ነገር ምንድን ነው?" },
+            { id: 4, cat: "Personality", q: "ህይወት ፈታኝ በሚሆንበት ጊዜ ወደፊት እንድትቀጥይ የሚያበረታታሽ ምንድን ነው?" },
+            { id: 5, cat: "Personality", q: "ውሳኔ ስትወስኚ በስሜት ነው ወይስ በምክንያታዊነት ትመሪዋለሽ?" },
+            { id: 6, cat: "Love", q: "ጤናማ ግንኙነት በአንቺ እይታ ምን ይመስላል?" },
+            { id: 7, cat: "Love", q: "በምን አይነት ሁኔታ ነው በጣም እንደተወደድሽ የሚሰማሽ?" },
+            { id: 8, cat: "Love", q: "በአንድ ግንኙነት ውስጥ በፍጹም የማይታለፍ ነገር ምንድን ነው?" },
+            { id: 9, cat: "Love", q: "አለመግባባቶች ሲፈጠሩ አብዛኛውን ጊዜ እንዴት ነው የምታስተናግጃቸው?" },
+            { id: 10, cat: "Love", q: "ፍቅር በጊዜ ሂደት እያደገ የሚመጣ ይመስልሻል ወይስ በአንዴ የሚፈጠር?" },
+            { id: 11, cat: "Depth", q: "ህይወት በአስቸጋሪ መንገድ ያስተማረሽ ትልቁ ትምህርት ምንድን ነው?" },
+            { id: 12, cat: "Depth", q: "በጭንቀት ውስጥ ስትሆኚ ራስሽን ለማረጋጋት ምን ይረዳሻል?" },
+            { id: 13, cat: "Depth", q: "አንድ ሰው በስሜትሽ ላይ ጉዳት ቢያደርስብሽ ምላሽሽ ምንድን ነው?" },
+            { id: 14, cat: "Depth", q: "በቀላሉ ይቅር ትያለሽ ወይስ ጊዜ ያስፈልግሻል?" },
+            { id: 15, cat: "Depth", q: "በትልቅነት የምትፈሪው የስሜት ስጋት ምንድን ነው?" },
+            { id: 16, cat: "Future", q: "በሚቀጥሉት ከ5 እስከ 10 ዓመታት ውስጥ ራስሽን የት ታገኚዋለሽ?" },
+            { id: 17, cat: "Future", q: "ልጅ መውለድ ትፈልጊያለሽ? ለምን?" },
+            { id: 18, cat: "Future", q: "ስኬት ላንቺ ትርጉሙ ምንድን ነው?" },
+            { id: 19, cat: "Future", q: "በስራ እና በቤተሰብ መካከል ያለው ሚዛን ምን ያህል አስፈላጊ ነው?" },
+            { id: 20, cat: "Future", q: "ለፍቅር ወይም ለስራ ስትዪ የመኖሪያ ቦታሽን ትቀይሪያለሽ?" },
+            { id: 21, cat: "Money", q: "ገንዘብ ቆጣቢ ነሽ፣ አውጪ ወይስ ኢንቨስት የምታደርጊ?" },
+            { id: 22, cat: "Money", q: "የገንዘብ ዋስትና ላንቺ ምንድን ነው?" },
+            { id: 23, cat: "Money", q: "ጥንዶች የገንዘብ አቅማቸውን ማጣመር አለባቸው ብለሽ ታምኚያለሽ?" },
+            { id: 24, cat: "Money", q: "የፍቅር ጓደኛ ስትመርጪ የገንዘብ ጥንካሬው ምን ያህል አስፈላጊ ነው?" },
+            { id: 25, cat: "Money", q: "ያለምንም ጸጸት ገንዘብሽን የምታወጭበት አንድ ነገር ምንድን ነው?" },
+            { id: 26, cat: "Values", q: "በህይወትሽ ትልቁን ቦታ የምትሰጪያቸው 3 እሴቶች ምንድን ናቸው?" },
+            { id: 27, cat: "Values", q: "ሃይማኖት ወይም መንፈሳዊነት በህይወትሽ ውስጥ ምን ያህል ቦታ አለው?" },
+            { id: 28, cat: "Values", q: "ከኋላሽ ምን አይነት አሻራ ጥለሽ ማለፍ ትፈልጊያለሽ?" },
+            { id: 29, cat: "Values", q: "ስታድጊ ባህሪሽን በመቅረጽ ረገድ ትልቁን ተጽዕኖ ያሳደረው ማን ነው?" },
+            { id: 30, cat: "Values", q: "ላንቺ ታማኝነት ማለት ምን ማለት ነው?" },
+            { id: 31, cat: "Fun", q: "የምታልሚው የጉዞ መዝናኛ የት ነው?" },
+            { id: 32, cat: "Fun", q: "ቤትሽ መዋል ይሻልሻል ወይስ ውጪ ወጥቶ አዳዲስ ነገሮችን መሞከር?" },
+            { id: 33, cat: "Fun", q: "ምን አይነት ህይወት ቢኖርሽ ነው ሙሉ እንደሆንሽ የሚሰማሽ?" },
+            { id: 34, cat: "Fun", q: "ካለፈ ህይወትሽ አንድ ነገር መቀየር ብትችዪ ትቀይሪ ነበር?" },
+            { id: 35, cat: "Fun", q: "ከምንም በላይ የሚያስቅሽ ነገር ምንድን ነው?" },
+            { id: 36, cat: "Intimacy", q: "ለምትወዳቸው ሰዎች ፍቅርሽን እንዴት ነው የምትገልጪላቸው?" },
+            { id: 37, cat: "Intimacy", q: "የፍቅር አጋር በህይወትሽ ውስጥ ምን አይነት ሚና ሊኖረው ይገባል?" },
+            { id: 38, cat: "Intimacy", q: "በአንድ ግንኙነት ውስጥ ክብር ማለት ላንቺ ትርጉሙ ምንድን ነው?" },
+            { id: 39, cat: "Intimacy", q: "አብሮ ማደግ የሚለው ቃል ላንቺ ትርጉሙ ምንድን ነው?" },
+            { id: 40, cat: "Intimacy", q: "በስተርጅናሽ ጎንሽ እንዲሆን የምትፈልጊው ምን አይነት አጋር ነው?" }
+        ];
+
+        let usedIds = JSON.parse(localStorage.getItem('dash_used_v2')) || [];
+        const gridEl = document.getElementById('grid');
+        const modal = document.getElementById('modal');
+        let currentActiveId = null;
+
+        function init() {
+            renderGrid();
+            updateStats();
+        }
+
+        function renderGrid() {
+            gridEl.innerHTML = '';
+            db.forEach(item => {
+                const el = document.createElement('div');
+                el.className = `grid-item ${usedIds.includes(item.id) ? 'used' : ''}`;
+                el.innerText = item.id;
+                el.onclick = () => openModal(item.id);
+                gridEl.appendChild(el);
+            });
+        }
+
+        function openModal(id) {
+            currentActiveId = id;
+            const data = db.find(x => x.id === id);
+            document.getElementById('mNumber').innerText = `Question ${id}`;
+            document.getElementById('mText').innerText = data.q;
+            document.getElementById('mCategory').innerText = data.cat;
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            if (currentActiveId && !usedIds.includes(currentActiveId)) {
+                usedIds.push(currentActiveId);
+                localStorage.setItem('dash_used_v2', JSON.stringify(usedIds));
+            }
+            modal.classList.remove('open');
+            renderGrid();
+            updateStats();
+        }
+
+        function closeModalOnly() {
+            modal.classList.remove('open');
+        }
+
+        function updateStats() {
+            const count = usedIds.length;
+            const pct = Math.round((count / 40) * 100);
+            document.getElementById('mobProgress').innerText = `${count}/40`;
+            if(document.getElementById('deskProgress')) {
+                document.getElementById('deskProgress').innerText = `${pct}%`;
+                document.getElementById('deskBar').style.width = `${pct}%`;
+            }
+        }
+
+        function resetDashboard() {
+            if(confirm("Reset game progress?")) {
+                localStorage.removeItem('dash_used_v2');
+                usedIds = [];
+                init();
+            }
+        }
+        init();
+    </script>
+</body>
+</html>
+
+
