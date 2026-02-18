@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#4c0519">
+    
+    <!-- SOCIAL SHARE PREVIEW (Telegram/WhatsApp) -->
+    <meta property="og:title" content="Connection Lab ❤️">
+    <meta property="og:description" content="50 Deep Questions to strengthen our bond. Let's play!">
+    <meta property="og:image" content="https://ui-avatars.com/api/?name=❤️&background=e11d48&color=fff&size=512&font-size=0.5">
+    <meta property="og:url" content="https://solomon19.github.io/game.html">
+    <meta property="og:type" content="website">
+
+    <!-- FAVICON -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+
     <title>Connection Lab ❤️</title>
     
     <!-- Premium Fonts -->
@@ -19,8 +30,8 @@
             /* ROMANTIC THEME PALETTE */
             --primary: #e11d48;    /* Rose Red */
             --secondary: #fb7185;  /* Soft Pink */
-            --success: #10b981;    /* Green for success */
-            --danger: #ef4444;     /* Red for danger */
+            --success: #10b981;    /* Green */
+            --danger: #ef4444;     /* Red */
             --bg-dark: #4c0519;    /* Deep Wine */
             
             --glass-surface: rgba(255, 255, 255, 0.1);
@@ -41,15 +52,14 @@
             overflow-x: hidden;
         }
 
-        /* --- Animated Romantic Background --- */
+        /* --- Animated Background --- */
         .ambient-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            /* Deep Red, Wine, and Rose Gradient */
             background: linear-gradient(135deg, #2e020e, #4c0519, #881337, #be123c);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 20s ease infinite;
         }
 
         @keyframes gradientBG {
@@ -58,12 +68,45 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Header Section --- */
+        /* --- Toast Notification --- */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            width: 90%;
+            max-width: 400px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(255, 255, 255, 0.95);
+            color: #4c0519;
+            padding: 12px 20px;
+            border-radius: 50px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .toast.show { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* --- Header --- */
         .app-header {
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(46, 2, 14, 0.85); /* Dark Wine Glass */
+            background: rgba(46, 2, 14, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
@@ -72,7 +115,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
         }
 
         .brand {
@@ -84,17 +126,12 @@
             gap: 12px;
         }
         
-        /* --- LOGO STYLES --- */
         .logo-placeholder {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white;
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
             border: 2px solid rgba(255,255,255,0.2);
         }
@@ -106,18 +143,11 @@
             font-size: 0.85rem;
             font-weight: 600;
             border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* --- Controls Area --- */
-        .controls-area {
-            padding: 25px 20px;
-            text-align: center;
-        }
+        /* --- Controls --- */
+        .controls-area { padding: 25px 20px; text-align: center; }
 
-        /* PREMIUM SPIN BUTTON (Red Theme) */
         .btn-spin {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -128,48 +158,28 @@
             font-weight: 800;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-            max-width: 320px;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; gap: 12px;
+            transition: transform 0.2s;
+            position: relative; overflow: hidden;
         }
 
         .btn-spin:active { transform: scale(0.96); }
         
-        /* Continuous Shine Animation */
+        /* Shine Effect */
         .btn-spin::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
+            content: ''; position: absolute; top: 0; left: -100%;
             width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
             transform: skewX(-20deg);
             animation: shine 4s infinite;
         }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
-        }
-
-        .btn-spin i { transition: transform 0.5s; }
         .btn-spin.spinning i { animation: spinIcon 0.8s linear infinite; }
-
         @keyframes spinIcon { 100% { transform: rotate(360deg); } }
 
-        /* --- Main Grid --- */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 20px 60px 20px;
-        }
+        /* --- Grid --- */
+        .container { max-width: 600px; margin: 0 auto; padding: 0 20px 60px 20px; }
 
         .grid {
             display: grid;
@@ -183,104 +193,62 @@
             background: var(--glass-surface);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; font-weight: 700; color: white;
+            cursor: pointer; position: relative;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            
-            /* Initial state for entrance animation */
-            opacity: 0;
-            transform: translateY(20px);
+            opacity: 0; transform: translateY(20px);
             animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        @keyframes cardEntrance {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes cardEntrance { to { opacity: 1; transform: translateY(0); } }
 
         .card:active { transform: scale(0.9) !important; }
 
         .card.highlight {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 0 25px rgba(251, 113, 133, 0.6); /* Pink Glow */
-            transform: scale(1.15);
-            z-index: 10;
-            border-color: white;
+            background: white; color: var(--primary);
+            box-shadow: 0 0 25px rgba(251, 113, 133, 0.8);
+            transform: scale(1.15); z-index: 10; border-color: white;
         }
 
         .card.used {
-            background: rgba(0,0,0,0.25);
-            border-color: transparent;
-            color: rgba(255,255,255,0.2);
-            box-shadow: none;
+            background: rgba(0,0,0,0.25); border-color: transparent;
+            color: rgba(255,255,255,0.2); box-shadow: none;
         }
 
-        /* --- Functional Reset Button --- */
+        /* --- Reset Button --- */
         .btn-reset {
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
             border: 1px solid var(--glass-border);
-            padding: 18px;
-            width: 100%;
-            border-radius: 18px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
+            padding: 18px; width: 100%; border-radius: 18px;
+            font-size: 1rem; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: all 0.3s;
         }
 
-        .btn-reset:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        /* Danger state */
         .btn-reset.confirming {
-            background: var(--danger);
-            color: white;
-            border-color: var(--danger);
-            animation: shake 0.4s ease-in-out;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+            background: var(--danger); color: white;
+            border-color: var(--danger); animation: shake 0.4s ease-in-out;
         }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        /* --- Bottom Sheet Modal --- */
+        /* --- Modal --- */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 100; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s; display: flex; align-items: flex-end; justify-content: center;
         }
+        
+        /* Center modal on desktop, bottom on mobile */
+        @media(min-width: 600px) { .modal-overlay { align-items: center; } }
 
         .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .sheet {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            /* Romantic Modal Gradient */
             background: linear-gradient(to bottom, #4c0519, #2e020e);
             border-top: 1px solid rgba(255,255,255,0.2);
             border-radius: 30px 30px 0 0;
@@ -288,90 +256,82 @@
             padding-bottom: max(30px, env(safe-area-inset-bottom));
             transform: translateY(110%);
             transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: 101;
-            max-width: 600px;
-            margin: 0 auto;
+            z-index: 101; width: 100%; max-width: 600px;
             box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
         }
+        
+        @media(min-width: 600px) { .sheet { border-radius: 30px; } }
 
         .modal-overlay.active .sheet { transform: translateY(0); }
 
         .category-badge {
             display: inline-block;
-            background: rgba(251, 113, 133, 0.15); /* Soft Pink Badge */
+            background: rgba(251, 113, 133, 0.15);
             color: #fca5a5;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 8px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            padding: 8px 16px; border-radius: 10px; margin-bottom: 20px;
             border: 1px solid rgba(251, 113, 133, 0.3);
         }
 
         .q-text {
-            font-size: 1.5rem;
-            line-height: 1.5;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 40px;
+            font-size: 1.5rem; line-height: 1.5; font-weight: 600;
+            color: white; margin-bottom: 40px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .modal-actions { display: grid; grid-template-columns: 1fr 4fr; gap: 12px; }
+
+        .btn-share {
+            background: rgba(255,255,255,0.1); color: white;
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 18px;
+            font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            border-radius: 18px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
+            color: white; border: none; padding: 18px; border-radius: 18px;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer;
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         
         .btn-close-text {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            margin-top: 15px;
-            width: 100%;
-            padding: 10px;
-            font-size: 0.95rem;
-            cursor: pointer;
+            background: transparent; border: none; color: var(--text-muted);
+            margin-top: 15px; width: 100%; padding: 10px; font-size: 0.95rem; cursor: pointer;
         }
 
-        /* --- Confetti Animation --- */
+        /* --- Victory Screen --- */
+        .victory-modal {
+            text-align: center;
+            display: none;
+        }
+        .victory-modal.show { display: block; }
+        .victory-icon { font-size: 4rem; margin-bottom: 20px; animation: bounce 2s infinite; }
+        
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
+
+        /* --- Confetti --- */
         .confetti {
-            position: fixed;
-            width: 8px; height: 8px;
-            top: -10px;
-            z-index: 200;
-            pointer-events: none;
+            position: fixed; width: 8px; height: 8px; top: -10px; z-index: 200; pointer-events: none;
             animation: fall linear forwards;
         }
-        
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
     </style>
 </head>
 <body>
 
     <div class="ambient-bg"></div>
+    <div id="toastContainer" class="toast-container"></div>
 
     <!-- Header -->
     <header class="app-header">
         <div class="brand">
-            <div class="logo-placeholder">
-                <i class="fa-solid fa-heart"></i>
-            </div>
+            <div class="logo-placeholder"><i class="fa-solid fa-heart"></i></div>
             <span>Connection Lab</span>
         </div>
         <div class="progress-pill">
-            <span id="progressText">0/40</span>
+            <span id="progressText">0/50</span>
         </div>
     </header>
 
@@ -386,200 +346,265 @@
     <div class="container">
         <div class="grid" id="grid"></div>
         
-        <!-- Smart Reset Button -->
         <button id="resetBtn" class="btn-reset">
             <i class="fa-solid fa-rotate-right"></i> Start Over
         </button>
     </div>
 
-    <!-- Modal -->
+    <!-- Question Modal -->
     <div class="modal-overlay" id="overlay">
-        <div class="sheet">
-            <div style="text-align: center;">
-                <div style="font-size: 0.9rem; color: #fda4af; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;" id="mNumber">#</div>
-                <div class="category-badge" id="mCategory">Topic</div>
-                <div class="q-text" id="mText">...</div>
+        <div class="sheet" id="questionSheet">
+            <!-- Normal Question Content -->
+            <div id="qContent">
+                <div style="text-align: center;">
+                    <div style="font-size: 0.9rem; color: #fda4af; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;" id="mNumber">#</div>
+                    <div class="category-badge" id="mCategory">Topic</div>
+                    <div class="q-text" id="mText">...</div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-share" id="shareBtn" onclick="shareQuestion()">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                    <button class="btn-primary" id="doneBtn">
+                        <i class="fa-solid fa-check"></i> Mark as Done
+                    </button>
+                </div>
+                <button class="btn-close-text" id="closeBtn">Close</button>
             </div>
-            <button class="btn-primary" id="doneBtn">
-                <i class="fa-solid fa-check"></i> Mark as Done
-            </button>
-            <button class="btn-close-text" id="closeBtn">Close</button>
+
+            <!-- Victory Content (Hidden by default) -->
+            <div id="victoryContent" class="victory-modal">
+                <div class="victory-icon">👑</div>
+                <div class="q-text">You completed all 50 questions!</div>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 30px;">You are now closer than ever.</p>
+                <button class="btn-primary" onclick="resetGameForce()">
+                    <i class="fa-solid fa-rotate-right"></i> Play Again
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
-        /* ================= STATE ENGINE ================= */
+        /* ================= AUDIO ENGINE (Synthesized) ================= */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'tick') {
+                // Roulette Tick (Short high blip)
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } 
+            else if (type === 'pop') {
+                // Modal Open (Pleasant Pop)
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            }
+            else if (type === 'success') {
+                // Success Chord (Major Triad)
+                [440, 554, 659].forEach((freq, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.type = 'sine';
+                    o.frequency.value = freq;
+                    g.gain.setValueAtTime(0.05, now + (i*0.05));
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5 + (i*0.05));
+                    o.start(now + (i*0.05));
+                    o.stop(now + 0.6);
+                });
+            }
+        }
+
+        /* ================= STATE ================= */
         const appState = {
             usedIds: JSON.parse(localStorage.getItem('dash_used_v3')) || [],
             currentId: null,
             isSpinning: false,
-            total: 40
+            total: 50
         };
 
-        /* ================= CATEGORY COLORS (For dynamic badge) ================= */
         const categoryColors = {
-            "Personality": "#fb7185",
-            "Love": "#f43f5e",
-            "Depth": "#e11d48",
-            "Future": "#be123c",
-            "Money": "#10b981",
-            "Values": "#6366f1",
-            "Fun": "#f59e0b",
-            "Intimacy": "#ec4899"
+            "Personality": "#fb7185", "Love": "#f43f5e", "Depth": "#e11d48",
+            "Future": "#be123c", "Money": "#10b981", "Values": "#6366f1",
+            "Fun": "#f59e0b", "Intimacy": "#ec4899"
         };
 
-        /* ================= DATABASE (Gender Neutral) ================= */
         const db = [
-            { id: 1, cat: "Personality", q: "በህይወትህ/ሽ በጣም ደስተኛ የሚያደርግህ/ሽ ነገር ምንድን ነው?" },
-            { id: 2, cat: "Personality", q: "በራስህ/ሽ በጣም የምትኮራበት/ሪበት ነገር ምንድን ነው?" },
-            { id: 3, cat: "Personality", q: "ሰዎች ስለ አንተ/ቺ አብዛኛው ጊዜ በተሳሳተ መንገድ የሚረዱት ነገር ምንድን ነው?" },
-            { id: 4, cat: "Personality", q: "ህይወት ፈታኝ በሚሆንበት ጊዜ ወደፊት እንድትቀጥል/ይ የሚያበረታታህ/ሽ ምንድን ነው?" },
-            { id: 5, cat: "Personality", q: "ውሳኔ አሰጣጥህ/ሽ እንዴት ነው? በስሜት ወይስ በምክንያት?" },
-            { id: 6, cat: "Love", q: "ጤናማ ግንኙነት በአንተ/ቺ እይታ ምን ይመስላል?" },
-            { id: 7, cat: "Love", q: "በጣም እንደተወደድክ/ሽ የሚሰማህ/ሽ በምን አይነት ሁኔታ ነው?" },
+            { id: 1, cat: "Personality", q: "በህይወትሽ በጣም ደስተኛ የሚያደርግሽ ነገር ምንድን ነው?" },
+            { id: 2, cat: "Personality", q: "በራስሽ በጣም የምትኮሪበት ነገር ምንድን ነው?" },
+            { id: 3, cat: "Personality", q: "ሰዎች ስለ አንቺ አብዛኛው ጊዜ በተሳሳተ መንገድ የሚረዱት ነገር ምንድን ነው?" },
+            { id: 4, cat: "Personality", q: "ህይወት ፈታኝ በሚሆንበት ጊዜ ወደፊት እንድትቀጥይ የሚያበረታታሽ ምንድን ነው?" },
+            { id: 5, cat: "Personality", q: "ውሳኔ አሰጣጥሽ እንዴት ነው? በስሜት ወይስ በምክንያት?" },
+            { id: 6, cat: "Love", q: "ጤናማ ግንኙነት በአንቺ እይታ ምን ይመስላል?" },
+            { id: 7, cat: "Love", q: "በጣም እንደተወደድሽ የሚሰማሽ በምን አይነት ሁኔታ ነው?" },
             { id: 8, cat: "Love", q: "በአንድ ግንኙነት ውስጥ በፍጹም የማይታለፍ ነገር ምንድን ነው?" },
-            { id: 9, cat: "Love", q: "አለመግባባቶች ሲፈጠሩ አብዛኛውን ጊዜ እንዴት ነው የምታስተናግደው/ጂው?" },
-            { id: 10, cat: "Love", q: "ፍቅር በጊዜ ሂደት እያደገ የሚመጣ ይመስልሃል/ሻል ወይስ በአንዴ የሚፈጠር?" },
-            { id: 11, cat: "Depth", q: "ህይወት በአስቸጋሪ መንገድ ያስተማረህ/ሽ ትልቁ ትምህርት ምንድን ነው?" },
-            { id: 12, cat: "Depth", q: "ሲጨንቅህ/ሽ ራስህን/ሽን ለማረጋጋት ምን ታደርጋለህ/ያለሽ?" },
-            { id: 13, cat: "Depth", q: "አንድ ሰው በስሜትህ/ሽ ላይ ጉዳት ቢያደርስብህ/ሽ ምላሽህ/ሽ ምንድን ነው?" },
-            { id: 14, cat: "Depth", q: "በቀላሉ ይቅር ትላለህ/ያለሽ ወይስ ጊዜ ያስፈልግሃል/ሻል?" },
-            { id: 15, cat: "Depth", q: "በትልቅነት የምትፈራው/ሪው የስሜት ስጋት ምንድን ነው?" },
-            { id: 16, cat: "Future", q: "በ5-10 ዓመታት ውስጥ ራስህን/ሽን የት ታያለህ/ያለሽ?" },
-            { id: 17, cat: "Future", q: "ልጅ የመውለድ ፍላጎት አለህ/ሽ? ለምን?" },
-            { id: 18, cat: "Future", q: "ስኬት ላንተ/ቺ ትርጉሙ ምንድን ነው?" },
+            { id: 9, cat: "Love", q: "አለመግባባቶች ሲፈጠሩ አብዛኛውን ጊዜ እንዴት ነው የምታስተናግጂው?" },
+            { id: 10, cat: "Love", q: "ፍቅር በጊዜ ሂደት እያደገ የሚመጣ ይመስልሻል ወይስ በአንዴ የሚፈጠር?" },
+            { id: 11, cat: "Depth", q: "ህይወት በአስቸጋሪ መንገድ ያስተማረሽ ትልቁ ትምህርት ምንድን ነው?" },
+            { id: 12, cat: "Depth", q: "ሲጨንቅሽ ራስሽን ለማረጋጋት ምን ታደርጊያለሽ?" },
+            { id: 13, cat: "Depth", q: "አንድ ሰው በስሜትሽ ላይ ጉዳት ቢያደርስብሽ ምላሽሽ ምንድን ነው?" },
+            { id: 14, cat: "Depth", q: "በቀላሉ ይቅር ትያለሽ ወይስ ጊዜ ያስፈልግሻል?" },
+            { id: 15, cat: "Depth", q: "በትልቅነት የምትፈሪው የስሜት ስጋት ምንድን ነው?" },
+            { id: 16, cat: "Future", q: "በ5-10 ዓመታት ውስጥ ራስሽን የት ታያለሽ?" },
+            { id: 17, cat: "Future", q: "ልጅ የመውለድ ፍላጎት አለሽ? ለምን?" },
+            { id: 18, cat: "Future", q: "ስኬት ላንቺ ትርጉሙ ምንድን ነው?" },
             { id: 19, cat: "Future", q: "በስራ እና በቤተሰብ መካከል ያለው ሚዛን ምን ያህል አስፈላጊ ነው?" },
-            { id: 20, cat: "Future", q: "ለፍቅር ወይም ለስራ ስትል/ይ የመኖሪያ ቦታህን/ሽን ትቀይራለህ/ሪያለሽ?" },
-            { id: 21, cat: "Money", q: "ገንዘብ አጠቃቀምህ/ሽ እንዴት ነው? ቆጣቢ፣ አውጪ ወይስ ኢንቨስተር?" },
-            { id: 22, cat: "Money", q: "የገንዘብ ዋስትና ላንተ/ቺ ምንድን ነው?" },
-            { id: 23, cat: "Money", q: "ጥንዶች የገንዘብ አቅማቸውን ማጣመር አለባቸው ብለህ/ሽ ታምናለህ/ኚያለሽ?" },
-            { id: 24, cat: "Money", q: "የፍቅር ጓደኛ ስትመርጥ/ጪ የገንዘብ ጥንካሬው ምን ያህል አስፈላጊ ነው?" },
-            { id: 25, cat: "Money", q: "ያለምንም ጸጸት ገንዘብህን/ሽን የምታወጣበት/ጪበት አንድ ነገር ምንድን ነው?" },
-            { id: 26, cat: "Values", q: "በህይወትህ/ሽ ትልቁን ቦታ የምትሰጣቸው/ጪያቸው 3 እሴቶች ምንድን ናቸው?" },
-            { id: 27, cat: "Values", q: "ሃይማኖት ወይም መንፈሳዊነት በህይወትህ/ሽ ውስጥ ምን ያህል ቦታ አለው?" },
-            { id: 28, cat: "Values", q: "ከኋላህ/ሽ ምን አይነት አሻራ ጥለህ/ሽ ማለፍ ትፈልጋለህ/ጊያለሽ?" },
-            { id: 29, cat: "Values", q: "ስታድግ/ጊ ባህሪህን/ሽን በመቅረጽ ረገድ ትልቁን ተጽዕኖ ያሳደረው ማን ነው?" },
-            { id: 30, cat: "Values", q: "ላንተ/ቺ ታማኝነት ማለት ምን ማለት ነው?" },
-            { id: 31, cat: "Fun", q: "የምታልመው/ሚው የጉዞ መዝናኛ የት ነው?" },
-            { id: 32, cat: "Fun", q: "ቤት መዋል ይሻልሃል/ሻል ወይስ ውጪ ወጥቶ አዳዲስ ነገሮችን መሞከር?" },
-            { id: 33, cat: "Fun", q: "ምን አይነት ህይወት ቢኖርህ/ሽ ነው ሙሉ (Fulfilled) እንደሆንክ/ሽ የሚሰማህ/ሽ?" },
-            { id: 34, cat: "Fun", q: "ካለፈ ህይወትህ/ሽ አንድ ነገር መቀየር ብትችል/ይ ትቀይር/ሪ ነበር?" },
-            { id: 35, cat: "Fun", q: "ከምንም በላይ የሚያስቅህ/ሽ ነገር ምንድን ነው?" },
-            { id: 36, cat: "Intimacy", q: "ለምትወዳቸው ሰዎች ፍቅርህን/ሽን እንዴት ነው የምትገልጸው/ጪው?" },
-            { id: 37, cat: "Intimacy", q: "የፍቅር አጋር በህይወትህ/ሽ ውስጥ ምን አይነት ሚና ሊኖረው ይገባል?" },
-            { id: 38, cat: "Intimacy", q: "በአንድ ግንኙነት ውስጥ ክብር ማለት ላንተ/ቺ ትርጉሙ ምንድን ነው?" },
-            { id: 39, cat: "Intimacy", q: "አብሮ ማደግ የሚለው ቃል ላንተ/ቺ ትርጉሙ ምንድን ነው?" },
-            { id: 40, cat: "Intimacy", q: "በስተርጅናህ/ሽ ጎንህ/ሽ እንዲሆን የምትፈልገው/ጊው ምን አይነት አጋር ነው?" }
+            { id: 20, cat: "Future", q: "ለፍቅር ወይም ለስራ ስትይ የመኖሪያ ቦታሽን ትቀይሪያለሽ?" },
+            { id: 21, cat: "Money", q: "ገንዘብ አጠቃቀምሽ እንዴት ነው? ቆጣቢ፣ አውጪ ወይስ ኢንቨስተር?" },
+            { id: 22, cat: "Money", q: "የገንዘብ ዋስትና ላንቺ ምንድን ነው?" },
+            { id: 23, cat: "Money", q: "ጥንዶች የገንዘብ አቅማቸውን ማጣመር አለባቸው ብለሽ ታምኚያለሽ?" },
+            { id: 24, cat: "Money", q: "የፍቅር ጓደኛ ስትመርጪ የገንዘብ ጥንካሬው ምን ያህል አስፈላጊ ነው?" },
+            { id: 25, cat: "Money", q: "ያለምንም ጸጸት ገንዘብሽን የምታወጪበት አንድ ነገር ምንድን ነው?" },
+            { id: 26, cat: "Values", q: "በህይወትሽ ትልቁን ቦታ የምትሰጪያቸው 3 እሴቶች ምንድን ናቸው?" },
+            { id: 27, cat: "Values", q: "ሃይማኖት ወይም መንፈሳዊነት በህይወትሽ ውስጥ ምን ያህል ቦታ አለው?" },
+            { id: 28, cat: "Values", q: "ከኋላሽ ምን አይነት አሻራ ጥለሽ ማለፍ ትፈልጊያለሽ?" },
+            { id: 29, cat: "Values", q: "ስታድጊ ባህሪሽን በመቅረጽ ረገድ ትልቁን ተጽዕኖ ያሳደረው ማን ነው?" },
+            { id: 30, cat: "Values", q: "ላንቺ ታማኝነት ማለት ምን ማለት ነው?" },
+            { id: 31, cat: "Fun", q: "የምታልሚው የጉዞ መዝናኛ የት ነው?" },
+            { id: 32, cat: "Fun", q: "ቤት መዋል ይሻልሻል ወይስ ውጪ ወጥቶ አዳዲስ ነገሮችን መሞከር?" },
+            { id: 33, cat: "Fun", q: "ምን አይነት ህይወት ቢኖርሽ ነው ሙሉ (Fulfilled) እንደሆንሽ የሚሰማሽ?" },
+            { id: 34, cat: "Fun", q: "ካለፈ ህይወትሽ አንድ ነገር መቀየር ብትችዪ ትቀይሪ ነበር?" },
+            { id: 35, cat: "Fun", q: "ከምንም በላይ የሚያስቅሽ ነገር ምንድን ነው?" },
+            { id: 36, cat: "Intimacy", q: "ለምትወዳቸው ሰዎች ፍቅርሽን እንዴት ነው የምትገልጪው?" },
+            { id: 37, cat: "Intimacy", q: "የፍቅር አጋር በህይወትሽ ውስጥ ምን አይነት ሚና ሊኖረው ይገባል?" },
+            { id: 38, cat: "Intimacy", q: "በአንድ ግንኙነት ውስጥ ክብር ማለት ላንቺ ትርጉሙ ምንድን ነው?" },
+            { id: 39, cat: "Intimacy", q: "አብሮ ማደግ የሚለው ቃል ላንቺ ትርጉሙ ምንድን ነው?" },
+            { id: 40, cat: "Intimacy", q: "በስተርጅናሽ ጎንሽ እንዲሆን የምትፈልጊው ምን አይነት አጋር ነው?" },
+            { id: 41, cat: "Fun", q: "ጠዋት ስትነሺ መጀመሪያ የምታደርጊው ነገር ምንድን ነው?" },
+            { id: 42, cat: "Depth", q: "ብቻሽን መሆን ያስፈራሻል ወይስ ያስደስትሻል?" },
+            { id: 43, cat: "Personality", q: "ልጅነትሽ ላይ የነበረሽ ህልም ምን ነበር?" },
+            { id: 44, cat: "Personality", q: "ሰው ቢሰድብሽ መልስ ትሰጫለሽ ወይስ ዝም ትያለሽ?" },
+            { id: 45, cat: "Love", q: "ወንድን ልጅ በፍቅር ለማውደቅ የምትጠቀሚበት ዘዴ አለ?" },
+            { id: 46, cat: "Values", q: "ውሸት ተናግረሽ ታውቂያለሽ? ለምን?" },
+            { id: 47, cat: "Depth", q: "በህይወትሽ የሚቆጭሽ ነገር አለ?" },
+            { id: 48, cat: "Future", q: "እርጅና ያስፈራሻል?" },
+            { id: 49, cat: "Fun", q: "ሶሻል ሚዲያ ላይ የምታጠፊውን ጊዜ መቀነስ ትፈልጊያለሽ?" },
+            { id: 50, cat: "Intimacy", q: "የመጀመሪያው የፍቅር ግንኙነትሽ ምን አስተማረሽ?" }
         ];
 
-        /* ================= HAPTICS (Mobile Vibration) ================= */
+        /* ================= TOAST ================= */
+        function showToast(message, icon = "fa-info-circle") {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        /* ================= HAPTICS ================= */
         function haptic(type = "light") {
             if (!navigator.vibrate) return;
-            const patterns = {
-                light: 10,
-                medium: 25,
-                heavy: [30, 40, 30] // Success vibe
-            };
+            const patterns = { light: 10, medium: 25, heavy: [30, 40, 30] };
             navigator.vibrate(patterns[type]);
         }
 
-        /* ================= RENDER GRID ================= */
+        /* ================= RENDER ================= */
         const gridEl = document.getElementById("grid");
 
         function renderGrid() {
             const frag = document.createDocumentFragment();
             gridEl.innerHTML = "";
-            
             db.forEach((item, index) => {
                 const el = document.createElement("div");
                 el.className = "card " + (appState.usedIds.includes(item.id) ? "used" : "");
                 el.textContent = item.id;
-                
-                // Staggered entrance animation
-                el.style.animationDelay = `${index * 30}ms`;
-                
-                el.onclick = () => {
-                    if (!appState.isSpinning) openModal(item.id);
-                };
+                el.style.animationDelay = `${index * 15}ms`;
+                el.onclick = () => { if (!appState.isSpinning) openModal(item.id); };
                 frag.appendChild(el);
             });
             gridEl.appendChild(frag);
             updateProgress();
         }
 
-        /* ================= SMART RANDOM (Avoids repeats) ================= */
-        function getSmartRandom(available) {
-            // Try to avoid the last 3 selected numbers if possible
-            const recent = appState.usedIds.slice(-3);
-            const filtered = available.filter(a => !recent.includes(a.id));
-            const pool = filtered.length > 0 ? filtered : available;
-            return pool[Math.floor(Math.random() * pool.length)];
-        }
-
         /* ================= SPIN ROULETTE ================= */
         document.getElementById("spinBtn").onclick = () => {
             const available = db.filter(d => !appState.usedIds.includes(d.id));
-            if (available.length === 0) return alert("🎉 All questions answered! Reset to play again.");
+            if (available.length === 0) return checkCompletion();
 
             appState.isSpinning = true;
             const btn = document.getElementById("spinBtn");
             btn.classList.add("spinning");
 
             let counter = 0;
-            let speed = 50;
+            let speed = 20;
             let lastHighlight = null;
-            const jumps = 20;
+            const maxJumps = 25;
 
             function step() {
-                // Clear previous
                 if (lastHighlight) {
                     const prevEl = gridEl.children[lastHighlight.id - 1];
                     if (prevEl) prevEl.classList.remove("highlight");
                 }
 
-                // Pick smart random
-                const randomItem = getSmartRandom(available);
+                const randomItem = available[Math.floor(Math.random() * available.length)];
                 const el = gridEl.children[randomItem.id - 1];
                 
-                // Highlight
                 el.classList.add("highlight");
                 el.scrollIntoView({ behavior: "smooth", block: "center" });
                 lastHighlight = randomItem;
+                
+                playSound('tick'); // Sound Effect
 
                 counter++;
 
-                if (counter < jumps) {
-                    // Slow down curve
-                    if (counter > jumps - 5) speed += 60;
+                if (counter < maxJumps) {
+                    speed = Math.floor(speed * 1.15); 
                     setTimeout(step, speed);
                 } else {
-                    // Finish
                     setTimeout(() => {
-                        // Keep highlight on selected one? No, remove it and open modal
                         el.classList.remove("highlight");
                         openModal(randomItem.id);
-                        
                         btn.classList.remove("spinning");
                         appState.isSpinning = false;
                         haptic("medium");
-                    }, 400);
+                    }, 500);
                 }
             }
             step();
         };
 
-        /* ================= MODAL LOGIC ================= */
+        /* ================= MODAL ================= */
         const overlay = document.getElementById("overlay");
+        const qContent = document.getElementById("qContent");
+        const vContent = document.getElementById("victoryContent");
 
         function openModal(id) {
             appState.currentId = id;
             const data = db.find(x => x.id === id);
             
-            // Set Content
+            // Ensure we are showing question, not victory
+            qContent.style.display = "block";
+            vContent.classList.remove("show");
+
             const catEl = document.getElementById("mCategory");
             catEl.textContent = data.cat;
-            // Dynamic category color
-            catEl.style.background = categoryColors[data.cat] + "30"; // 30 = low opacity
+            catEl.style.background = categoryColors[data.cat] + "30";
             catEl.style.color = categoryColors[data.cat];
             catEl.style.borderColor = categoryColors[data.cat] + "50";
 
@@ -588,40 +613,59 @@
             
             overlay.classList.add("active");
             haptic("light");
+            playSound('pop');
         }
 
-        // Close Logic
-        function closeModal() {
-            overlay.classList.remove("active");
-        }
+        function closeModal() { overlay.classList.remove("active"); }
         document.getElementById("closeBtn").onclick = closeModal;
-        overlay.onclick = (e) => {
-            if(e.target === overlay) closeModal();
-        };
+        overlay.onclick = (e) => { if(e.target === overlay) closeModal(); };
 
-        /* ================= MARK AS DONE ================= */
+        /* ================= SHARE ================= */
+        function shareQuestion() {
+            const data = db.find(x => x.id === appState.currentId);
+            const text = `🔥 Connection Lab #${data.id}\n\n"${data.q}"`;
+            
+            if (navigator.share) {
+                navigator.share({ title: 'Connection Lab', text: text })
+                    .catch(() => copyToClipboard(text));
+            } else {
+                copyToClipboard(text);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Copied to clipboard!", "fa-copy");
+            });
+        }
+
+        /* ================= MARK DONE ================= */
         document.getElementById("doneBtn").onclick = () => {
             const id = appState.currentId;
             if (id && !appState.usedIds.includes(id)) {
                 appState.usedIds.push(id);
                 localStorage.setItem("dash_used_v3", JSON.stringify(appState.usedIds));
                 
-                renderGrid(); // Refresh UI
-                triggerConfetti(); // Celebration
-                checkCompletion();
+                renderGrid();
+                triggerConfetti();
+                playSound('success');
+                
+                if (appState.usedIds.length === appState.total) {
+                    setTimeout(() => showVictory(), 500);
+                }
             }
             closeModal();
         };
 
-        /* ================= COMPLETION CHECK ================= */
-        function checkCompletion() {
-            if (appState.usedIds.length === appState.total) {
-                triggerMegaConfetti();
-                setTimeout(() => alert("🎉 You completed Connection Lab!"), 500);
-            }
+        function showVictory() {
+            qContent.style.display = "none";
+            vContent.classList.add("show");
+            overlay.classList.add("active");
+            triggerMegaConfetti();
+            playSound('success');
         }
 
-        /* ================= CONFETTI ================= */
+        /* ================= CONFETTI & PROGRESS ================= */
         function triggerConfetti(count = 30) {
             const colors = ['#e11d48', '#fb7185', '#10b981', '#ffffff', '#ffd700'];
             for (let i = 0; i < count; i++) {
@@ -631,47 +675,46 @@
                 c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 c.style.animationDuration = (Math.random() * 2 + 1) + 's';
                 document.body.appendChild(c);
-                
                 setTimeout(() => c.remove(), 3000);
             }
         }
-        
-        function triggerMegaConfetti() {
-            triggerConfetti(120);
+        function triggerMegaConfetti() { triggerConfetti(120); }
+
+        function updateProgress() {
+            document.getElementById("progressText").textContent = 
+                `${appState.usedIds.length}/${appState.total}`;
         }
 
-        /* ================= RESET BUTTON (Double Tap) ================= */
+        /* ================= RESET ================= */
         const resetBtn = document.getElementById("resetBtn");
         let resetTimeout;
 
-        resetBtn.onclick = () => {
+        resetBtn.onclick = handleReset;
+        
+        function handleReset() {
             if (resetBtn.classList.contains("confirming")) {
-                // Confirmed
-                appState.usedIds = [];
-                localStorage.removeItem("dash_used_v3");
-                renderGrid();
-                
-                resetBtn.classList.remove("confirming");
-                resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
-                haptic("heavy");
-                
+                resetGameForce();
             } else {
-                // First Tap
                 resetBtn.classList.add("confirming");
                 resetBtn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tap again to confirm';
-                
                 clearTimeout(resetTimeout);
                 resetTimeout = setTimeout(() => {
                     resetBtn.classList.remove("confirming");
                     resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
                 }, 3000);
             }
-        };
+        }
 
-        /* ================= PROGRESS ================= */
-        function updateProgress() {
-            document.getElementById("progressText").textContent = 
-                `${appState.usedIds.length}/${appState.total}`;
+        function resetGameForce() {
+            appState.usedIds = [];
+            localStorage.removeItem("dash_used_v3");
+            renderGrid();
+            
+            resetBtn.classList.remove("confirming");
+            resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+            showToast("Game Reset!", "fa-trash-can");
+            haptic("heavy");
+            closeModal();
         }
 
         /* ================= INIT ================= */
