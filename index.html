@@ -133,7 +133,7 @@
             gap: 12px;
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
-            max-width: 300px;
+            max-width: 320px;
             justify-content: center;
             position: relative;
             overflow: hidden;
@@ -216,9 +216,9 @@
         }
 
         .card.used {
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.25);
             border-color: transparent;
-            color: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.2);
             box-shadow: none;
         }
 
@@ -377,7 +377,7 @@
 
     <!-- Controls -->
     <div class="controls-area">
-        <button class="btn-spin" id="spinBtn" onclick="spinRoulette()">
+        <button class="btn-spin" id="spinBtn">
             <i class="fa-solid fa-arrows-rotate"></i> Spin Random
         </button>
     </div>
@@ -387,28 +387,48 @@
         <div class="grid" id="grid"></div>
         
         <!-- Smart Reset Button -->
-        <button id="resetBtn" class="btn-reset" onclick="handleReset()">
+        <button id="resetBtn" class="btn-reset">
             <i class="fa-solid fa-rotate-right"></i> Start Over
         </button>
     </div>
 
     <!-- Modal -->
-    <div class="modal-overlay" id="overlay" onclick="closeModalOnly()">
-        <div class="sheet" onclick="event.stopPropagation()">
+    <div class="modal-overlay" id="overlay">
+        <div class="sheet">
             <div style="text-align: center;">
                 <div style="font-size: 0.9rem; color: #fda4af; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;" id="mNumber">#</div>
                 <div class="category-badge" id="mCategory">Topic</div>
                 <div class="q-text" id="mText">...</div>
             </div>
-            <button class="btn-primary" onclick="markAsDone()">
+            <button class="btn-primary" id="doneBtn">
                 <i class="fa-solid fa-check"></i> Mark as Done
             </button>
-            <button class="btn-close-text" onclick="closeModalOnly()">Close</button>
+            <button class="btn-close-text" id="closeBtn">Close</button>
         </div>
     </div>
 
     <script>
-        // --- Database ---
+        /* ================= STATE ENGINE ================= */
+        const appState = {
+            usedIds: JSON.parse(localStorage.getItem('dash_used_v3')) || [],
+            currentId: null,
+            isSpinning: false,
+            total: 40
+        };
+
+        /* ================= CATEGORY COLORS (For dynamic badge) ================= */
+        const categoryColors = {
+            "Personality": "#fb7185",
+            "Love": "#f43f5e",
+            "Depth": "#e11d48",
+            "Future": "#be123c",
+            "Money": "#10b981",
+            "Values": "#6366f1",
+            "Fun": "#f59e0b",
+            "Intimacy": "#ec4899"
+        };
+
+        /* ================= DATABASE (Gender Neutral) ================= */
         const db = [
             { id: 1, cat: "Personality", q: "በህይወትህ/ሽ በጣም ደስተኛ የሚያደርግህ/ሽ ነገር ምንድን ነው?" },
             { id: 2, cat: "Personality", q: "በራስህ/ሽ በጣም የምትኮራበት/ሪበት ነገር ምንድን ነው?" },
@@ -452,150 +472,211 @@
             { id: 40, cat: "Intimacy", q: "በስተርጅናህ/ሽ ጎንህ/ሽ እንዲሆን የምትፈልገው/ጊው ምን አይነት አጋር ነው?" }
         ];
 
-        // --- State ---
-        let usedIds = JSON.parse(localStorage.getItem('dash_used_v2')) || [];
-        const gridEl = document.getElementById('grid');
-        const overlay = document.getElementById('overlay');
-        const spinBtn = document.getElementById('spinBtn');
-        let currentId = null;
-        let isSpinning = false;
-        let resetTimeout;
+        /* ================= HAPTICS (Mobile Vibration) ================= */
+        function haptic(type = "light") {
+            if (!navigator.vibrate) return;
+            const patterns = {
+                light: 10,
+                medium: 25,
+                heavy: [30, 40, 30] // Success vibe
+            };
+            navigator.vibrate(patterns[type]);
+        }
 
-        function init() {
-            renderGrid();
+        /* ================= RENDER GRID ================= */
+        const gridEl = document.getElementById("grid");
+
+        function renderGrid() {
+            const frag = document.createDocumentFragment();
+            gridEl.innerHTML = "";
+            
+            db.forEach((item, index) => {
+                const el = document.createElement("div");
+                el.className = "card " + (appState.usedIds.includes(item.id) ? "used" : "");
+                el.textContent = item.id;
+                
+                // Staggered entrance animation
+                el.style.animationDelay = `${index * 30}ms`;
+                
+                el.onclick = () => {
+                    if (!appState.isSpinning) openModal(item.id);
+                };
+                frag.appendChild(el);
+            });
+            gridEl.appendChild(frag);
             updateProgress();
         }
 
-        function renderGrid() {
-            gridEl.innerHTML = '';
-            db.forEach((item, index) => {
-                const el = document.createElement('div');
-                el.className = `card ${usedIds.includes(item.id) ? 'used' : ''}`;
-                el.textContent = item.id;
-                
-                // Entrance Stagger Animation
-                el.style.animationDelay = `${index * 30}ms`;
-                
-                el.onclick = () => { if(!isSpinning) openModal(item.id); };
-                gridEl.appendChild(el);
-            });
+        /* ================= SMART RANDOM (Avoids repeats) ================= */
+        function getSmartRandom(available) {
+            // Try to avoid the last 3 selected numbers if possible
+            const recent = appState.usedIds.slice(-3);
+            const filtered = available.filter(a => !recent.includes(a.id));
+            const pool = filtered.length > 0 ? filtered : available;
+            return pool[Math.floor(Math.random() * pool.length)];
         }
 
-        // --- Roulette Logic ---
-        function spinRoulette() {
-            const available = db.filter(item => !usedIds.includes(item.id));
-            if (available.length === 0) {
-                alert("All questions answered! Reset to play again.");
-                return;
-            }
-            
-            isSpinning = true;
-            spinBtn.classList.add('spinning');
-            
+        /* ================= SPIN ROULETTE ================= */
+        document.getElementById("spinBtn").onclick = () => {
+            const available = db.filter(d => !appState.usedIds.includes(d.id));
+            if (available.length === 0) return alert("🎉 All questions answered! Reset to play again.");
+
+            appState.isSpinning = true;
+            const btn = document.getElementById("spinBtn");
+            btn.classList.add("spinning");
+
             let counter = 0;
             let speed = 50;
             let lastHighlight = null;
             const jumps = 20;
 
             function step() {
+                // Clear previous
                 if (lastHighlight) {
                     const prevEl = gridEl.children[lastHighlight.id - 1];
-                    if(prevEl) prevEl.classList.remove('highlight');
+                    if (prevEl) prevEl.classList.remove("highlight");
                 }
 
-                const randomItem = available[Math.floor(Math.random() * available.length)];
+                // Pick smart random
+                const randomItem = getSmartRandom(available);
                 const el = gridEl.children[randomItem.id - 1];
-                el.classList.add('highlight');
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Highlight
+                el.classList.add("highlight");
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
                 lastHighlight = randomItem;
 
                 counter++;
-                
+
                 if (counter < jumps) {
+                    // Slow down curve
                     if (counter > jumps - 5) speed += 60;
                     setTimeout(step, speed);
                 } else {
+                    // Finish
                     setTimeout(() => {
-                        el.classList.remove('highlight');
+                        // Keep highlight on selected one? No, remove it and open modal
+                        el.classList.remove("highlight");
                         openModal(randomItem.id);
-                        isSpinning = false;
-                        spinBtn.classList.remove('spinning');
-                    }, 500);
+                        
+                        btn.classList.remove("spinning");
+                        appState.isSpinning = false;
+                        haptic("medium");
+                    }, 400);
                 }
             }
             step();
-        }
+        };
+
+        /* ================= MODAL LOGIC ================= */
+        const overlay = document.getElementById("overlay");
 
         function openModal(id) {
-            currentId = id;
+            appState.currentId = id;
             const data = db.find(x => x.id === id);
-            document.getElementById('mCategory').textContent = data.cat;
-            document.getElementById('mNumber').textContent = `QUESTION ${id}`;
-            document.getElementById('mText').textContent = data.q;
-            overlay.classList.add('active');
-            if (navigator.vibrate) navigator.vibrate(15);
-        }
-
-        function closeModalOnly() {
-            overlay.classList.remove('active');
-        }
-
-        function markAsDone() {
-            if (currentId && !usedIds.includes(currentId)) {
-                usedIds.push(currentId);
-                localStorage.setItem('dash_used_v2', JSON.stringify(usedIds));
-                const card = gridEl.children[currentId - 1];
-                card.classList.add('used');
-                updateProgress();
-                triggerConfetti(); // Trigger Confetti
-            }
-            closeModalOnly();
-        }
-
-        function updateProgress() {
-            document.getElementById('progressText').textContent = `${usedIds.length}/40`;
-        }
-
-        // --- Confetti Effect (Updated colors for theme) ---
-        function triggerConfetti() {
-            const colors = ['#e11d48', '#fb7185', '#10b981', '#ffffff', '#ffd700'];
-            for(let i=0; i<30; i++) {
-                const conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                document.body.appendChild(conf);
-                
-                setTimeout(() => conf.remove(), 3000);
-            }
-        }
-
-        // --- Smart Reset (Double Tap) ---
-        function handleReset() {
-            const btn = document.getElementById('resetBtn');
             
-            if (btn.classList.contains('confirming')) {
-                usedIds = [];
-                localStorage.removeItem('dash_used_v2');
-                renderGrid();
-                updateProgress();
+            // Set Content
+            const catEl = document.getElementById("mCategory");
+            catEl.textContent = data.cat;
+            // Dynamic category color
+            catEl.style.background = categoryColors[data.cat] + "30"; // 30 = low opacity
+            catEl.style.color = categoryColors[data.cat];
+            catEl.style.borderColor = categoryColors[data.cat] + "50";
+
+            document.getElementById("mNumber").textContent = "QUESTION " + id;
+            document.getElementById("mText").textContent = data.q;
+            
+            overlay.classList.add("active");
+            haptic("light");
+        }
+
+        // Close Logic
+        function closeModal() {
+            overlay.classList.remove("active");
+        }
+        document.getElementById("closeBtn").onclick = closeModal;
+        overlay.onclick = (e) => {
+            if(e.target === overlay) closeModal();
+        };
+
+        /* ================= MARK AS DONE ================= */
+        document.getElementById("doneBtn").onclick = () => {
+            const id = appState.currentId;
+            if (id && !appState.usedIds.includes(id)) {
+                appState.usedIds.push(id);
+                localStorage.setItem("dash_used_v3", JSON.stringify(appState.usedIds));
                 
-                btn.classList.remove('confirming');
-                btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+                renderGrid(); // Refresh UI
+                triggerConfetti(); // Celebration
+                checkCompletion();
+            }
+            closeModal();
+        };
+
+        /* ================= COMPLETION CHECK ================= */
+        function checkCompletion() {
+            if (appState.usedIds.length === appState.total) {
+                triggerMegaConfetti();
+                setTimeout(() => alert("🎉 You completed Connection Lab!"), 500);
+            }
+        }
+
+        /* ================= CONFETTI ================= */
+        function triggerConfetti(count = 30) {
+            const colors = ['#e11d48', '#fb7185', '#10b981', '#ffffff', '#ffd700'];
+            for (let i = 0; i < count; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                document.body.appendChild(c);
+                
+                setTimeout(() => c.remove(), 3000);
+            }
+        }
+        
+        function triggerMegaConfetti() {
+            triggerConfetti(120);
+        }
+
+        /* ================= RESET BUTTON (Double Tap) ================= */
+        const resetBtn = document.getElementById("resetBtn");
+        let resetTimeout;
+
+        resetBtn.onclick = () => {
+            if (resetBtn.classList.contains("confirming")) {
+                // Confirmed
+                appState.usedIds = [];
+                localStorage.removeItem("dash_used_v3");
+                renderGrid();
+                
+                resetBtn.classList.remove("confirming");
+                resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+                haptic("heavy");
                 
             } else {
-                btn.classList.add('confirming');
-                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tap again to confirm';
+                // First Tap
+                resetBtn.classList.add("confirming");
+                resetBtn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tap again to confirm';
+                
                 clearTimeout(resetTimeout);
                 resetTimeout = setTimeout(() => {
-                    btn.classList.remove('confirming');
-                    btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+                    resetBtn.classList.remove("confirming");
+                    resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
                 }, 3000);
             }
+        };
+
+        /* ================= PROGRESS ================= */
+        function updateProgress() {
+            document.getElementById("progressText").textContent = 
+                `${appState.usedIds.length}/${appState.total}`;
         }
 
-        init();
+        /* ================= INIT ================= */
+        renderGrid();
+
     </script>
 </body>
 </html>
