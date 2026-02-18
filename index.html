@@ -107,8 +107,9 @@
             color: white; border: none; padding: 16px 32px; border-radius: 50px;
             font-size: 1.1rem; font-weight: 800; cursor: pointer;
             box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
-            display: inline-flex; align-items: center; gap: 12px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px;
             transition: transform 0.2s; position: relative; overflow: hidden;
+            width: 100%; max-width: 320px;
         }
         .btn-spin:active { transform: scale(0.96); }
         .btn-spin::after {
@@ -123,7 +124,7 @@
         /* --- Grid --- */
         .container { max-width: 600px; margin: 0 auto; padding: 0 20px 60px 20px; }
         .grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 40px;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 30px;
         }
         .card {
             aspect-ratio: 1; background: var(--glass-surface);
@@ -149,7 +150,7 @@
 
         /* --- Button Group --- */
         .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .btn-reset, .btn-support {
+        .btn-reset, .btn-support, .btn-bottom-spin {
             padding: 16px; border-radius: 18px; font-size: 0.95rem;
             font-weight: 600; cursor: pointer; display: flex; align-items: center;
             justify-content: center; gap: 8px; transition: all 0.3s; text-decoration: none;
@@ -162,21 +163,25 @@
             background: var(--danger); color: white; border-color: var(--danger);
             animation: shake 0.4s ease-in-out;
         }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         
+        /* Secondary Spin Button (Bottom) */
+        .btn-bottom-spin {
+            background: rgba(255, 255, 255, 0.1); color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%; margin-bottom: 20px;
+        }
+        .btn-bottom-spin:hover { background: rgba(255,255,255,0.2); }
+
         .btn-support {
             background: rgba(245, 158, 11, 0.15); color: #fbbf24;
             border: 1px solid rgba(245, 158, 11, 0.4);
         }
-        .btn-support:hover {
-            background: var(--gold); color: black;
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-        }
+        
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-        /* --- Payment Options Modal Style --- */
+        /* --- Payment Modal --- */
         .pay-option {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
             padding: 15px; border-radius: 16px; margin-bottom: 12px;
             display: flex; align-items: center; justify-content: space-between;
             cursor: pointer; transition: 0.2s;
@@ -187,7 +192,7 @@
         .pay-label { display: block; font-weight: 700; color: white; font-size: 1rem; }
         .pay-sub { display: block; font-size: 0.8rem; color: var(--text-muted); }
 
-        /* --- Modal Generic --- */
+        /* --- Question Modal --- */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             backdrop-filter: blur(10px); z-index: 100; opacity: 0; visibility: hidden;
@@ -206,7 +211,6 @@
         @media(min-width: 600px) { .sheet { border-radius: 30px; } }
         .modal-overlay.active .sheet { transform: translateY(0); }
 
-        /* Question Modal Elements */
         .category-badge {
             display: inline-block; background: rgba(251, 113, 133, 0.15);
             color: #fca5a5; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
@@ -215,21 +219,40 @@
         }
         .q-text {
             font-size: 1.5rem; line-height: 1.5; font-weight: 600;
-            color: white; margin-bottom: 40px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            color: white; margin-bottom: 30px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .modal-actions { display: grid; grid-template-columns: 1fr 4fr; gap: 12px; }
+
+        /* Modal Actions Layout */
+        .modal-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .modal-btn-row { display: grid; grid-template-columns: 1fr 3fr; gap: 12px; }
+
         .btn-share {
             background: rgba(255,255,255,0.1); color: white;
             border: 1px solid rgba(255,255,255,0.2); border-radius: 18px;
             font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1); color: white;
+            border: 1px solid rgba(255,255,255,0.2); padding: 16px; border-radius: 18px;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white; border: none; padding: 18px; border-radius: 18px;
-            font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            font-size: 1.1rem; font-weight: 800; cursor: pointer;
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
             display: flex; align-items: center; justify-content: center; gap: 10px;
+            position: relative; overflow: hidden;
         }
+        /* Subtle shine on primary button */
+        .btn-primary::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg); animation: shine 3s infinite;
+        }
+
         .btn-close-text {
             background: transparent; border: none; color: var(--text-muted);
             margin-top: 15px; width: 100%; padding: 10px; font-size: 0.95rem; cursor: pointer;
@@ -266,7 +289,7 @@
     </header>
 
     <div class="controls-area">
-        <button class="btn-spin" id="spinBtn">
+        <button class="btn-spin" id="spinBtn" onclick="triggerSpin()">
             <i class="fa-solid fa-arrows-rotate"></i> Spin Random
         </button>
     </div>
@@ -274,39 +297,51 @@
     <div class="container">
         <div class="grid" id="grid"></div>
         
+        <!-- Additional Spin Button at Bottom -->
+        <button class="btn-bottom-spin" onclick="triggerSpin()">
+            <i class="fa-solid fa-dice"></i> Spin Another
+        </button>
+
         <div class="button-group">
             <button id="resetBtn" class="btn-reset">
                 <i class="fa-solid fa-rotate-right"></i> Reset
             </button>
-            <!-- Opens Donation Modal -->
             <button class="btn-support" onclick="openDonationModal()">
                 <i class="fa-solid fa-hand-holding-heart"></i> Support
             </button>
         </div>
         
         <p style="text-align: center; color: rgba(255,255,255,0.3); font-size: 0.7rem; margin-top: 30px;">
-            Connection Lab v2.0
+            Connection Lab v2.1
         </p>
     </div>
 
     <!-- Question Modal -->
     <div class="modal-overlay" id="overlay">
         <div class="sheet" id="questionSheet">
-            <!-- Question Content -->
             <div id="qContent">
                 <div style="text-align: center;">
                     <div style="font-size: 0.9rem; color: #fda4af; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;" id="mNumber">#</div>
                     <div class="category-badge" id="mCategory">Topic</div>
                     <div class="q-text" id="mText">...</div>
                 </div>
+                
                 <div class="modal-actions">
-                    <button class="btn-share" id="shareBtn" onclick="shareQuestion()">
-                        <i class="fa-solid fa-share-nodes"></i>
-                    </button>
-                    <button class="btn-primary" id="doneBtn">
-                        <i class="fa-solid fa-check"></i> Mark as Done
+                    <!-- Top Row: Share & Normal Done -->
+                    <div class="modal-btn-row">
+                        <button class="btn-share" onclick="shareQuestion()">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                        <button class="btn-secondary" onclick="handleDone(false)">
+                            Mark Done
+                        </button>
+                    </div>
+                    <!-- Bottom Row: Done & Spin Next -->
+                    <button class="btn-primary" onclick="handleDone(true)">
+                        <i class="fa-solid fa-check"></i> Done & Spin Next <i class="fa-solid fa-arrows-rotate" style="font-size: 0.9em; margin-left: 5px;"></i>
                     </button>
                 </div>
+                
                 <button class="btn-close-text" onclick="closeModal('overlay')">Close</button>
             </div>
 
@@ -330,8 +365,7 @@
                 <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">If this game brought you closer, consider buying me a coffee (or a tea!).</p>
             </div>
 
-            <!-- OPTION 1: TELEBIRR (UPDATED WITH YOUR NUMBER) -->
-            <div class="pay-option" onclick="copyTelebirr('912294220')">
+            <div class="pay-option" onclick="copyTelebirr('0912294220')">
                 <div class="pay-icon" style="color: var(--telebirr)"><i class="fa-solid fa-mobile-screen-button"></i></div>
                 <div class="pay-text">
                     <span class="pay-label">Telebirr</span>
@@ -340,7 +374,6 @@
                 <i class="fa-solid fa-copy" style="color: var(--text-muted)"></i>
             </div>
 
-            <!-- OPTION 2: CHAPA (PLACEHOLDER) -->
             <a href="#" target="_blank" style="text-decoration: none;" id="chapaLink">
                 <div class="pay-option">
                     <div class="pay-icon" style="color: var(--chapa)"><i class="fa-solid fa-credit-card"></i></div>
@@ -471,12 +504,14 @@
         }
 
         /* ================= GAMEPLAY ================= */
-        document.getElementById("spinBtn").onclick = () => {
+        function triggerSpin() {
             const available = db.filter(d => !appState.usedIds.includes(d.id));
             if(available.length === 0) return checkCompletion();
             appState.isSpinning = true;
-            const btn = document.getElementById("spinBtn");
-            btn.classList.add("spinning");
+            
+            // Visual state for buttons
+            document.getElementById("spinBtn").classList.add("spinning");
+            
             let counter = 0, speed = 20, lastHighlight = null;
             const step = () => {
                 if(lastHighlight) gridEl.children[lastHighlight.id-1].classList.remove("highlight");
@@ -492,12 +527,13 @@
                 } else {
                     setTimeout(() => {
                         el.classList.remove("highlight"); openModal(randomItem.id);
-                        btn.classList.remove("spinning"); appState.isSpinning = false; haptic("medium");
+                        document.getElementById("spinBtn").classList.remove("spinning"); 
+                        appState.isSpinning = false; haptic("medium");
                     }, 500);
                 }
             };
             step();
-        };
+        }
 
         const overlay = document.getElementById("overlay");
         const qContent = document.getElementById("qContent");
@@ -529,7 +565,6 @@
             else copyToClipboard(text);
         }
         function copyToClipboard(text) { 
-            // Fallback copy method
             const textArea = document.createElement("textarea");
             textArea.value = text;
             document.body.appendChild(textArea);
@@ -539,13 +574,12 @@
                 document.execCommand('copy');
                 showToast("Copied to clipboard!", "fa-copy");
                 haptic("medium");
-            } catch (err) {
-                console.error('Fallback copy failed', err);
-            }
+            } catch (err) { console.error('Fallback copy failed', err); }
             document.body.removeChild(textArea);
         }
 
-        document.getElementById("doneBtn").onclick = () => {
+        // Modified Done Handler to accept Spin Next option
+        function handleDone(spinNext = false) {
             const id = appState.currentId;
             if(id && !appState.usedIds.includes(id)) {
                 appState.usedIds.push(id);
@@ -554,7 +588,14 @@
                 if(appState.usedIds.length === appState.total) setTimeout(()=>showVictory(), 500);
             }
             closeModal('overlay');
-        };
+            
+            // Auto Spin Logic
+            if(spinNext) {
+                setTimeout(() => {
+                    triggerSpin();
+                }, 600); // Small delay for UX
+            }
+        }
 
         function showVictory() {
             qContent.style.display = "none"; vContent.classList.add("show");
@@ -604,13 +645,9 @@
         }
 
         function copyTelebirr(num) {
-            // Use fallback copy method directly
             copyToClipboard(num);
-            showToast("Telebirr number copied!", "fa-check"); // Ensure toast shows specifically for this action
+            showToast("Telebirr number copied!", "fa-check");
         }
-
-        // Placeholder for user to insert Chapa link later if desired
-        // To enable Chapa, users should edit the href="#" in the HTML above.
 
         /* ================= START ================= */
         renderGrid();
