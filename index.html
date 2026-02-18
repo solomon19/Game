@@ -5,33 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#4c0519">
     
-    <!-- SOCIAL SHARE PREVIEW (Telegram/WhatsApp) -->
+    <!-- SOCIAL SHARE PREVIEW -->
     <meta property="og:title" content="Connection Lab ❤️">
     <meta property="og:description" content="50 Deep Questions to strengthen our bond. Let's play!">
     <meta property="og:image" content="https://ui-avatars.com/api/?name=❤️&background=e11d48&color=fff&size=512&font-size=0.5">
     <meta property="og:url" content="https://solomon19.github.io/game.html">
     <meta property="og:type" content="website">
 
-    <!-- FAVICON -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
-
     <title>Connection Lab ❤️</title>
     
-    <!-- Premium Fonts -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
         :root {
-            /* ROMANTIC THEME PALETTE */
             --primary: #e11d48;    /* Rose Red */
             --secondary: #fb7185;  /* Soft Pink */
             --success: #10b981;    /* Green */
             --danger: #ef4444;     /* Red */
+            --gold: #f59e0b;       /* Gold */
+            --telebirr: #2D9CDB;   /* Telebirr Blue */
+            --chapa: #00D09C;      /* Chapa Green */
             --bg-dark: #4c0519;    /* Deep Wine */
             
             --glass-surface: rgba(255, 255, 255, 0.1);
@@ -54,239 +51,178 @@
 
         /* --- Animated Background --- */
         .ambient-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: linear-gradient(135deg, #2e020e, #4c0519, #881337, #be123c);
             background-size: 400% 400%;
             animation: gradientBG 20s ease infinite;
         }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         /* --- Toast Notification --- */
         .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-            width: 90%;
-            max-width: 400px;
-            pointer-events: none;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; width: 90%; max-width: 400px; pointer-events: none;
         }
-
         .toast {
-            background: rgba(255, 255, 255, 0.95);
-            color: #4c0519;
-            padding: 12px 20px;
-            border-radius: 50px;
-            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.95); color: #4c0519;
+            padding: 12px 20px; border-radius: 50px; margin-bottom: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(-20px) scale(0.9);
+            font-weight: 700; font-size: 0.9rem; text-align: center;
+            opacity: 0; transform: translateY(-20px) scale(0.9);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-
         .toast.show { opacity: 1; transform: translateY(0) scale(1); }
 
         /* --- Header --- */
         .app-header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(46, 2, 14, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(46, 2, 14, 0.85); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
-            padding: 15px 24px;
-            padding-top: max(15px, env(safe-area-inset-top));
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 15px 24px; padding-top: max(15px, env(safe-area-inset-top));
+            display: flex; justify-content: space-between; align-items: center;
         }
-
         .brand {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            font-size: 1.2rem; font-weight: 800; color: white;
+            display: flex; align-items: center; gap: 12px;
         }
-        
         .logo-placeholder {
-            width: 40px; height: 40px;
-            border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex; align-items: center; justify-content: center;
             font-size: 1.2rem; color: white;
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
             border: 2px solid rgba(255,255,255,0.2);
         }
-
         .progress-pill {
-            background: rgba(255,255,255,0.1);
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            background: rgba(255,255,255,0.1); padding: 6px 14px;
+            border-radius: 30px; font-size: 0.85rem; font-weight: 600;
             border: 1px solid var(--glass-border);
         }
 
         /* --- Controls --- */
         .controls-area { padding: 25px 20px; text-align: center; }
-
         .btn-spin {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            cursor: pointer;
+            color: white; border: none; padding: 16px 32px; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 800; cursor: pointer;
             box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
             display: inline-flex; align-items: center; gap: 12px;
-            transition: transform 0.2s;
-            position: relative; overflow: hidden;
+            transition: transform 0.2s; position: relative; overflow: hidden;
         }
-
         .btn-spin:active { transform: scale(0.96); }
-        
-        /* Shine Effect */
         .btn-spin::after {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 50%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
-            transform: skewX(-20deg);
-            animation: shine 4s infinite;
+            transform: skewX(-20deg); animation: shine 4s infinite;
         }
         @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-
         .btn-spin.spinning i { animation: spinIcon 0.8s linear infinite; }
         @keyframes spinIcon { 100% { transform: rotate(360deg); } }
 
         /* --- Grid --- */
         .container { max-width: 600px; margin: 0 auto; padding: 0 20px 60px 20px; }
-
         .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-bottom: 40px;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 40px;
         }
-
         .card {
-            aspect-ratio: 1;
-            background: var(--glass-surface);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            aspect-ratio: 1; background: var(--glass-surface);
+            border: 1px solid var(--glass-border); border-radius: 16px;
             display: flex; justify-content: center; align-items: center;
             font-size: 1.2rem; font-weight: 700; color: white;
             cursor: pointer; position: relative;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            opacity: 0; transform: translateY(20px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); opacity: 0; transform: translateY(20px);
             animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-
         @keyframes cardEntrance { to { opacity: 1; transform: translateY(0); } }
-
         .card:active { transform: scale(0.9) !important; }
-
         .card.highlight {
             background: white; color: var(--primary);
             box-shadow: 0 0 25px rgba(251, 113, 133, 0.8);
             transform: scale(1.15); z-index: 10; border-color: white;
         }
-
         .card.used {
             background: rgba(0,0,0,0.25); border-color: transparent;
             color: rgba(255,255,255,0.2); box-shadow: none;
         }
 
-        /* --- Reset Button --- */
-        .btn-reset {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            border: 1px solid var(--glass-border);
-            padding: 18px; width: 100%; border-radius: 18px;
-            font-size: 1rem; font-weight: 600;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: all 0.3s;
+        /* --- Button Group --- */
+        .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+        .btn-reset, .btn-support {
+            padding: 16px; border-radius: 18px; font-size: 0.95rem;
+            font-weight: 600; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; gap: 8px; transition: all 0.3s; text-decoration: none;
         }
-
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.05); color: var(--text-muted);
+            border: 1px solid var(--glass-border);
+        }
         .btn-reset.confirming {
-            background: var(--danger); color: white;
-            border-color: var(--danger); animation: shake 0.4s ease-in-out;
+            background: var(--danger); color: white; border-color: var(--danger);
+            animation: shake 0.4s ease-in-out;
         }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        
+        .btn-support {
+            background: rgba(245, 158, 11, 0.15); color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .btn-support:hover {
+            background: var(--gold); color: black;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
 
-        /* --- Modal --- */
+        /* --- Payment Options Modal Style --- */
+        .pay-option {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 15px; border-radius: 16px; margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: 0.2s;
+        }
+        .pay-option:active { background: rgba(255,255,255,0.1); transform: scale(0.98); }
+        .pay-icon { font-size: 1.5rem; margin-right: 15px; width: 30px; text-align: center; }
+        .pay-text { flex-grow: 1; text-align: left; }
+        .pay-label { display: block; font-weight: 700; color: white; font-size: 1rem; }
+        .pay-sub { display: block; font-size: 0.8rem; color: var(--text-muted); }
+
+        /* --- Modal Generic --- */
         .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            z-index: 100; opacity: 0; visibility: hidden;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px); z-index: 100; opacity: 0; visibility: hidden;
             transition: opacity 0.3s; display: flex; align-items: flex-end; justify-content: center;
         }
-        
-        /* Center modal on desktop, bottom on mobile */
         @media(min-width: 600px) { .modal-overlay { align-items: center; } }
-
         .modal-overlay.active { opacity: 1; visibility: visible; }
-
         .sheet {
             background: linear-gradient(to bottom, #4c0519, #2e020e);
-            border-top: 1px solid rgba(255,255,255,0.2);
-            border-radius: 30px 30px 0 0;
-            padding: 30px 24px;
+            border-top: 1px solid rgba(255,255,255,0.2); border-radius: 30px 30px 0 0;
+            padding: 30px 24px; width: 100%; max-width: 600px;
             padding-bottom: max(30px, env(safe-area-inset-bottom));
-            transform: translateY(110%);
-            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            z-index: 101; width: 100%; max-width: 600px;
-            box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
+            transform: translateY(110%); transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.5); z-index: 101;
         }
-        
         @media(min-width: 600px) { .sheet { border-radius: 30px; } }
-
         .modal-overlay.active .sheet { transform: translateY(0); }
 
+        /* Question Modal Elements */
         .category-badge {
-            display: inline-block;
-            background: rgba(251, 113, 133, 0.15);
-            color: #fca5a5;
-            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            display: inline-block; background: rgba(251, 113, 133, 0.15);
+            color: #fca5a5; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
             padding: 8px 16px; border-radius: 10px; margin-bottom: 20px;
             border: 1px solid rgba(251, 113, 133, 0.3);
         }
-
         .q-text {
             font-size: 1.5rem; line-height: 1.5; font-weight: 600;
-            color: white; margin-bottom: 40px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            color: white; margin-bottom: 40px; text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-
         .modal-actions { display: grid; grid-template-columns: 1fr 4fr; gap: 12px; }
-
         .btn-share {
             background: rgba(255,255,255,0.1); color: white;
             border: 1px solid rgba(255,255,255,0.2); border-radius: 18px;
             font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white; border: none; padding: 18px; border-radius: 18px;
@@ -294,23 +230,18 @@
             box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
             display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        
         .btn-close-text {
             background: transparent; border: none; color: var(--text-muted);
             margin-top: 15px; width: 100%; padding: 10px; font-size: 0.95rem; cursor: pointer;
         }
 
-        /* --- Victory Screen --- */
-        .victory-modal {
-            text-align: center;
-            display: none;
-        }
+        /* Victory */
+        .victory-modal { text-align: center; display: none; }
         .victory-modal.show { display: block; }
         .victory-icon { font-size: 4rem; margin-bottom: 20px; animation: bounce 2s infinite; }
-        
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
 
-        /* --- Confetti --- */
+        /* Confetti */
         .confetti {
             position: fixed; width: 8px; height: 8px; top: -10px; z-index: 200; pointer-events: none;
             animation: fall linear forwards;
@@ -324,7 +255,6 @@
     <div class="ambient-bg"></div>
     <div id="toastContainer" class="toast-container"></div>
 
-    <!-- Header -->
     <header class="app-header">
         <div class="brand">
             <div class="logo-placeholder"><i class="fa-solid fa-heart"></i></div>
@@ -335,33 +265,40 @@
         </div>
     </header>
 
-    <!-- Controls -->
     <div class="controls-area">
         <button class="btn-spin" id="spinBtn">
             <i class="fa-solid fa-arrows-rotate"></i> Spin Random
         </button>
     </div>
 
-    <!-- Main Grid -->
     <div class="container">
         <div class="grid" id="grid"></div>
         
-        <button id="resetBtn" class="btn-reset">
-            <i class="fa-solid fa-rotate-right"></i> Start Over
-        </button>
+        <div class="button-group">
+            <button id="resetBtn" class="btn-reset">
+                <i class="fa-solid fa-rotate-right"></i> Reset
+            </button>
+            <!-- Opens Donation Modal -->
+            <button class="btn-support" onclick="openDonationModal()">
+                <i class="fa-solid fa-hand-holding-heart"></i> Support
+            </button>
+        </div>
+        
+        <p style="text-align: center; color: rgba(255,255,255,0.3); font-size: 0.7rem; margin-top: 30px;">
+            Connection Lab v2.0
+        </p>
     </div>
 
     <!-- Question Modal -->
     <div class="modal-overlay" id="overlay">
         <div class="sheet" id="questionSheet">
-            <!-- Normal Question Content -->
+            <!-- Question Content -->
             <div id="qContent">
                 <div style="text-align: center;">
                     <div style="font-size: 0.9rem; color: #fda4af; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;" id="mNumber">#</div>
                     <div class="category-badge" id="mCategory">Topic</div>
                     <div class="q-text" id="mText">...</div>
                 </div>
-                
                 <div class="modal-actions">
                     <button class="btn-share" id="shareBtn" onclick="shareQuestion()">
                         <i class="fa-solid fa-share-nodes"></i>
@@ -370,10 +307,10 @@
                         <i class="fa-solid fa-check"></i> Mark as Done
                     </button>
                 </div>
-                <button class="btn-close-text" id="closeBtn">Close</button>
+                <button class="btn-close-text" onclick="closeModal('overlay')">Close</button>
             </div>
 
-            <!-- Victory Content (Hidden by default) -->
+            <!-- Victory Content -->
             <div id="victoryContent" class="victory-modal">
                 <div class="victory-icon">👑</div>
                 <div class="q-text">You completed all 50 questions!</div>
@@ -385,71 +322,72 @@
         </div>
     </div>
 
+    <!-- Donation Modal -->
+    <div class="modal-overlay" id="donationOverlay">
+        <div class="sheet">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="color:white; margin:0 0 10px 0;">Support the App ❤️</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin:0;">If this game brought you closer, consider buying me a coffee (or a tea!).</p>
+            </div>
+
+            <!-- OPTION 1: TELEBIRR (UPDATED WITH YOUR NUMBER) -->
+            <div class="pay-option" onclick="copyTelebirr('912294220')">
+                <div class="pay-icon" style="color: var(--telebirr)"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                <div class="pay-text">
+                    <span class="pay-label">Telebirr</span>
+                    <span class="pay-sub">0912294220 (Tap to Copy)</span>
+                </div>
+                <i class="fa-solid fa-copy" style="color: var(--text-muted)"></i>
+            </div>
+
+            <!-- OPTION 2: CHAPA (PLACEHOLDER) -->
+            <a href="#" target="_blank" style="text-decoration: none;" id="chapaLink">
+                <div class="pay-option">
+                    <div class="pay-icon" style="color: var(--chapa)"><i class="fa-solid fa-credit-card"></i></div>
+                    <div class="pay-text">
+                        <span class="pay-label">Donate via Chapa</span>
+                        <span class="pay-sub">Cards & Banks Accepted</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="color: var(--text-muted)"></i>
+                </div>
+            </a>
+            
+            <button class="btn-close-text" onclick="closeModal('donationOverlay')">Close</button>
+        </div>
+    </div>
+
     <script>
-        /* ================= AUDIO ENGINE (Synthesized) ================= */
+        /* ================= AUDIO ENGINE ================= */
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
+            osc.connect(gain); gain.connect(audioCtx.destination);
             const now = audioCtx.currentTime;
 
             if (type === 'tick') {
-                // Roulette Tick (Short high blip)
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-                osc.start(now);
-                osc.stop(now + 0.05);
-            } 
-            else if (type === 'pop') {
-                // Modal Open (Pleasant Pop)
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(300, now);
-                osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.1);
-                osc.start(now);
-                osc.stop(now + 0.1);
-            }
-            else if (type === 'success') {
-                // Success Chord (Major Triad)
+                osc.type = 'sine'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(300, now+0.05);
+                gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now+0.05);
+                osc.start(now); osc.stop(now+0.05);
+            } else if (type === 'pop') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, now); osc.frequency.exponentialRampToValueAtTime(600, now+0.1);
+                gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now+0.1);
+                osc.start(now); osc.stop(now+0.1);
+            } else if (type === 'success') {
                 [440, 554, 659].forEach((freq, i) => {
-                    const o = audioCtx.createOscillator();
-                    const g = audioCtx.createGain();
-                    o.connect(g);
-                    g.connect(audioCtx.destination);
-                    o.type = 'sine';
-                    o.frequency.value = freq;
-                    g.gain.setValueAtTime(0.05, now + (i*0.05));
-                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5 + (i*0.05));
-                    o.start(now + (i*0.05));
-                    o.stop(now + 0.6);
+                    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.type = 'sine'; o.frequency.value = freq;
+                    g.gain.setValueAtTime(0.05, now+(i*0.05)); g.gain.exponentialRampToValueAtTime(0.001, now+0.5+(i*0.05));
+                    o.start(now+(i*0.05)); o.stop(now+0.6);
                 });
             }
         }
 
-        /* ================= STATE ================= */
-        const appState = {
-            usedIds: JSON.parse(localStorage.getItem('dash_used_v3')) || [],
-            currentId: null,
-            isSpinning: false,
-            total: 50
-        };
-
-        const categoryColors = {
-            "Personality": "#fb7185", "Love": "#f43f5e", "Depth": "#e11d48",
-            "Future": "#be123c", "Money": "#10b981", "Values": "#6366f1",
-            "Fun": "#f59e0b", "Intimacy": "#ec4899"
-        };
-
+        /* ================= STATE & DB ================= */
+        const appState = { usedIds: JSON.parse(localStorage.getItem('dash_used_v3')) || [], currentId: null, isSpinning: false, total: 50 };
+        const categoryColors = { "Personality": "#fb7185", "Love": "#f43f5e", "Depth": "#e11d48", "Future": "#be123c", "Money": "#10b981", "Values": "#6366f1", "Fun": "#f59e0b", "Intimacy": "#ec4899" };
         const db = [
             { id: 1, cat: "Personality", q: "በህይወትሽ በጣም ደስተኛ የሚያደርግሽ ነገር ምንድን ነው?" },
             { id: 2, cat: "Personality", q: "በራስሽ በጣም የምትኮሪበት ነገር ምንድን ነው?" },
@@ -503,30 +441,20 @@
             { id: 50, cat: "Intimacy", q: "የመጀመሪያው የፍቅር ግንኙነትሽ ምን አስተማረሽ?" }
         ];
 
-        /* ================= TOAST ================= */
-        function showToast(message, icon = "fa-info-circle") {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
-            container.appendChild(toast);
-            requestAnimationFrame(() => toast.classList.add('show'));
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+        /* ================= HELPERS ================= */
+        function showToast(msg, icon="fa-info-circle") {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+            c.appendChild(t);
+            requestAnimationFrame(()=>t.classList.add('show'));
+            setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),300); },3000);
         }
-
-        /* ================= HAPTICS ================= */
-        function haptic(type = "light") {
-            if (!navigator.vibrate) return;
-            const patterns = { light: 10, medium: 25, heavy: [30, 40, 30] };
-            navigator.vibrate(patterns[type]);
-        }
+        function haptic(type="light") { if(navigator.vibrate) navigator.vibrate({light:10,medium:25,heavy:[30,40,30]}[type]); }
 
         /* ================= RENDER ================= */
         const gridEl = document.getElementById("grid");
-
         function renderGrid() {
             const frag = document.createDocumentFragment();
             gridEl.innerHTML = "";
@@ -534,62 +462,43 @@
                 const el = document.createElement("div");
                 el.className = "card " + (appState.usedIds.includes(item.id) ? "used" : "");
                 el.textContent = item.id;
-                el.style.animationDelay = `${index * 15}ms`;
-                el.onclick = () => { if (!appState.isSpinning) openModal(item.id); };
+                el.style.animationDelay = `${index*15}ms`;
+                el.onclick = () => { if(!appState.isSpinning) openModal(item.id); };
                 frag.appendChild(el);
             });
             gridEl.appendChild(frag);
             updateProgress();
         }
 
-        /* ================= SPIN ROULETTE ================= */
+        /* ================= GAMEPLAY ================= */
         document.getElementById("spinBtn").onclick = () => {
             const available = db.filter(d => !appState.usedIds.includes(d.id));
-            if (available.length === 0) return checkCompletion();
-
+            if(available.length === 0) return checkCompletion();
             appState.isSpinning = true;
             const btn = document.getElementById("spinBtn");
             btn.classList.add("spinning");
-
-            let counter = 0;
-            let speed = 20;
-            let lastHighlight = null;
-            const maxJumps = 25;
-
-            function step() {
-                if (lastHighlight) {
-                    const prevEl = gridEl.children[lastHighlight.id - 1];
-                    if (prevEl) prevEl.classList.remove("highlight");
-                }
-
+            let counter = 0, speed = 20, lastHighlight = null;
+            const step = () => {
+                if(lastHighlight) gridEl.children[lastHighlight.id-1].classList.remove("highlight");
                 const randomItem = available[Math.floor(Math.random() * available.length)];
-                const el = gridEl.children[randomItem.id - 1];
-                
+                const el = gridEl.children[randomItem.id-1];
                 el.classList.add("highlight");
-                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.scrollIntoView({behavior:"smooth",block:"center"});
                 lastHighlight = randomItem;
-                
-                playSound('tick'); // Sound Effect
-
+                playSound('tick');
                 counter++;
-
-                if (counter < maxJumps) {
-                    speed = Math.floor(speed * 1.15); 
-                    setTimeout(step, speed);
+                if(counter < 25) {
+                    speed = Math.floor(speed * 1.15); setTimeout(step, speed);
                 } else {
                     setTimeout(() => {
-                        el.classList.remove("highlight");
-                        openModal(randomItem.id);
-                        btn.classList.remove("spinning");
-                        appState.isSpinning = false;
-                        haptic("medium");
+                        el.classList.remove("highlight"); openModal(randomItem.id);
+                        btn.classList.remove("spinning"); appState.isSpinning = false; haptic("medium");
                     }, 500);
                 }
-            }
+            };
             step();
         };
 
-        /* ================= MODAL ================= */
         const overlay = document.getElementById("overlay");
         const qContent = document.getElementById("qContent");
         const vContent = document.getElementById("victoryContent");
@@ -597,129 +506,114 @@
         function openModal(id) {
             appState.currentId = id;
             const data = db.find(x => x.id === id);
-            
-            // Ensure we are showing question, not victory
-            qContent.style.display = "block";
-            vContent.classList.remove("show");
-
-            const catEl = document.getElementById("mCategory");
-            catEl.textContent = data.cat;
-            catEl.style.background = categoryColors[data.cat] + "30";
-            catEl.style.color = categoryColors[data.cat];
-            catEl.style.borderColor = categoryColors[data.cat] + "50";
-
+            qContent.style.display = "block"; vContent.classList.remove("show");
+            document.getElementById("mCategory").textContent = data.cat;
+            document.getElementById("mCategory").style.color = categoryColors[data.cat];
+            document.getElementById("mCategory").style.background = categoryColors[data.cat]+"30";
+            document.getElementById("mCategory").style.borderColor = categoryColors[data.cat]+"50";
             document.getElementById("mNumber").textContent = "QUESTION " + id;
             document.getElementById("mText").textContent = data.q;
-            
             overlay.classList.add("active");
-            haptic("light");
-            playSound('pop');
+            haptic("light"); playSound('pop');
         }
 
-        function closeModal() { overlay.classList.remove("active"); }
-        document.getElementById("closeBtn").onclick = closeModal;
-        overlay.onclick = (e) => { if(e.target === overlay) closeModal(); };
+        function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+        overlay.onclick = (e) => { if(e.target === overlay) closeModal('overlay'); };
+        document.getElementById("donationOverlay").onclick = (e) => { if(e.target === document.getElementById("donationOverlay")) closeModal('donationOverlay'); };
 
-        /* ================= SHARE ================= */
+        /* ================= FEATURES ================= */
         function shareQuestion() {
             const data = db.find(x => x.id === appState.currentId);
             const text = `🔥 Connection Lab #${data.id}\n\n"${data.q}"`;
-            
-            if (navigator.share) {
-                navigator.share({ title: 'Connection Lab', text: text })
-                    .catch(() => copyToClipboard(text));
-            } else {
-                copyToClipboard(text);
-            }
+            if(navigator.share) navigator.share({title:'Connection Lab',text:text}).catch(()=>copyToClipboard(text));
+            else copyToClipboard(text);
         }
-
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
+        function copyToClipboard(text) { 
+            // Fallback copy method
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
                 showToast("Copied to clipboard!", "fa-copy");
-            });
+                haptic("medium");
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
         }
 
-        /* ================= MARK DONE ================= */
         document.getElementById("doneBtn").onclick = () => {
             const id = appState.currentId;
-            if (id && !appState.usedIds.includes(id)) {
+            if(id && !appState.usedIds.includes(id)) {
                 appState.usedIds.push(id);
                 localStorage.setItem("dash_used_v3", JSON.stringify(appState.usedIds));
-                
-                renderGrid();
-                triggerConfetti();
-                playSound('success');
-                
-                if (appState.usedIds.length === appState.total) {
-                    setTimeout(() => showVictory(), 500);
-                }
+                renderGrid(); triggerConfetti(); playSound('success');
+                if(appState.usedIds.length === appState.total) setTimeout(()=>showVictory(), 500);
             }
-            closeModal();
+            closeModal('overlay');
         };
 
         function showVictory() {
-            qContent.style.display = "none";
-            vContent.classList.add("show");
-            overlay.classList.add("active");
-            triggerMegaConfetti();
-            playSound('success');
+            qContent.style.display = "none"; vContent.classList.add("show");
+            overlay.classList.add("active"); triggerMegaConfetti(); playSound('success');
         }
 
-        /* ================= CONFETTI & PROGRESS ================= */
-        function triggerConfetti(count = 30) {
-            const colors = ['#e11d48', '#fb7185', '#10b981', '#ffffff', '#ffd700'];
-            for (let i = 0; i < count; i++) {
-                const c = document.createElement('div');
-                c.className = 'confetti';
-                c.style.left = Math.random() * 100 + 'vw';
-                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                c.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                document.body.appendChild(c);
-                setTimeout(() => c.remove(), 3000);
+        function triggerConfetti(count=30) {
+            const colors = ['#e11d48','#fb7185','#10b981','#fff','#ffd700'];
+            for(let i=0;i<count;i++){
+                const c=document.createElement('div'); c.className='confetti';
+                c.style.left=Math.random()*100+'vw';
+                c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+                c.style.animationDuration=(Math.random()*2+1)+'s';
+                document.body.appendChild(c); setTimeout(()=>c.remove(),3000);
             }
         }
-        function triggerMegaConfetti() { triggerConfetti(120); }
+        function triggerMegaConfetti(){ triggerConfetti(120); }
 
-        function updateProgress() {
-            document.getElementById("progressText").textContent = 
-                `${appState.usedIds.length}/${appState.total}`;
-        }
+        function updateProgress() { document.getElementById("progressText").textContent = `${appState.usedIds.length}/${appState.total}`; }
 
-        /* ================= RESET ================= */
+        /* ================= RESET & SUPPORT ================= */
         const resetBtn = document.getElementById("resetBtn");
         let resetTimeout;
-
-        resetBtn.onclick = handleReset;
-        
-        function handleReset() {
-            if (resetBtn.classList.contains("confirming")) {
-                resetGameForce();
-            } else {
+        resetBtn.onclick = () => {
+            if(resetBtn.classList.contains("confirming")) resetGameForce();
+            else {
                 resetBtn.classList.add("confirming");
-                resetBtn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tap again to confirm';
+                resetBtn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Confirm';
                 clearTimeout(resetTimeout);
                 resetTimeout = setTimeout(() => {
                     resetBtn.classList.remove("confirming");
-                    resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+                    resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reset';
                 }, 3000);
             }
-        }
+        };
 
         function resetGameForce() {
-            appState.usedIds = [];
-            localStorage.removeItem("dash_used_v3");
-            renderGrid();
-            
+            appState.usedIds = []; localStorage.removeItem("dash_used_v3"); renderGrid();
             resetBtn.classList.remove("confirming");
-            resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
-            showToast("Game Reset!", "fa-trash-can");
-            haptic("heavy");
-            closeModal();
+            resetBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reset';
+            showToast("Game Reset!", "fa-trash-can"); haptic("heavy"); closeModal('overlay');
         }
 
-        /* ================= INIT ================= */
-        renderGrid();
+        function openDonationModal() {
+            document.getElementById("donationOverlay").classList.add("active");
+            playSound('pop');
+        }
 
+        function copyTelebirr(num) {
+            // Use fallback copy method directly
+            copyToClipboard(num);
+            showToast("Telebirr number copied!", "fa-check"); // Ensure toast shows specifically for this action
+        }
+
+        // Placeholder for user to insert Chapa link later if desired
+        // To enable Chapa, users should edit the href="#" in the HTML above.
+
+        /* ================= START ================= */
+        renderGrid();
     </script>
 </body>
 </html>
