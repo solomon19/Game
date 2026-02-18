@@ -2,317 +2,600 @@
 <html lang="am">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#4f46e5">
-    <title>Relationship Dashboard 📊</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#4c0519">
+    <title>Connection Lab ❤️</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #f3f4f6;
-            --sidebar-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --primary: #4f46e5;
-            --accent: #ec4899;
-            --success: #10b981;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /* ROMANTIC THEME PALETTE */
+            --primary: #e11d48;    /* Rose Red */
+            --secondary: #fb7185;  /* Soft Pink */
+            --success: #10b981;    /* Green for success */
+            --danger: #ef4444;     /* Red for danger */
+            --bg-dark: #4c0519;    /* Deep Wine */
+            
+            --glass-surface: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #111827;
-                --sidebar-bg: #1f2937;
-                --text-main: #f9fafb;
-                --text-muted: #9ca3af;
-                --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-main); }
-
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: 1fr; /* Mobile First */
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            font-family: 'Outfit', 'Noto Sans Ethiopic', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom);
+            overflow-x: hidden;
         }
 
-        /* Sidebar hidden on mobile by default */
-        .sidebar {
-            display: none; 
-            background-color: var(--sidebar-bg);
-            padding: 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+        /* --- Animated Romantic Background --- */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            /* Deep Red, Wine, and Rose Gradient */
+            background: linear-gradient(135deg, #2e020e, #4c0519, #881337, #be123c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
 
-        /* Main Content */
-        .main-content {
-            padding: 20px;
-            overflow-y: auto;
-            max-width: 800px;
-            margin: 0 auto;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .header {
+        /* --- Header Section --- */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(46, 2, 14, 0.85); /* Dark Wine Glass */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 24px;
+            padding-top: max(15px, env(safe-area-inset-top));
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            background: var(--sidebar-bg);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
         }
 
-        /* Grid */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        .brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
             gap: 12px;
-            padding-bottom: 80px;
+        }
+        
+        /* --- LOGO STYLES --- */
+        .logo-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.5);
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
-        .grid-item {
-            background-color: var(--sidebar-bg);
+        .progress-pill {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Controls Area --- */
+        .controls-area {
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        /* PREMIUM SPIN BUTTON (Red Theme) */
+        .btn-spin {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-spin:active { transform: scale(0.96); }
+        
+        /* Continuous Shine Animation */
+        .btn-spin::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .btn-spin i { transition: transform 0.5s; }
+        .btn-spin.spinning i { animation: spinIcon 0.8s linear infinite; }
+
+        @keyframes spinIcon { 100% { transform: rotate(360deg); } }
+
+        /* --- Main Grid --- */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .card {
             aspect-ratio: 1;
-            border-radius: 12px;
+            background: var(--glass-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
             cursor: pointer;
-            box-shadow: var(--card-shadow);
-            border: 2px solid transparent;
-            color: var(--primary);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            
+            /* Initial state for entrance animation */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        .grid-item:active { transform: scale(0.95); }
-        
-        .grid-item.used {
-            background-color: transparent;
-            color: var(--text-muted);
-            border: 1px solid rgba(0,0,0,0.1);
+        @keyframes cardEntrance {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:active { transform: scale(0.9) !important; }
+
+        .card.highlight {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 0 25px rgba(251, 113, 133, 0.6); /* Pink Glow */
+            transform: scale(1.15);
+            z-index: 10;
+            border-color: white;
+        }
+
+        .card.used {
+            background: rgba(0,0,0,0.2);
+            border-color: transparent;
+            color: rgba(255,255,255,0.15);
             box-shadow: none;
         }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+        /* --- Functional Reset Button --- */
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid var(--glass-border);
+            padding: 18px;
+            width: 100%;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Danger state */
+        .btn-reset.confirming {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+            animation: shake 0.4s ease-in-out;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* --- Bottom Sheet Modal --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 100;
             opacity: 0;
-            pointer-events: none;
+            visibility: hidden;
             transition: opacity 0.3s;
-            backdrop-filter: blur(5px);
-            padding: 20px;
         }
 
-        .modal.open { opacity: 1; pointer-events: all; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
 
-        .modal-card {
-            background: var(--sidebar-bg);
-            padding: 30px 25px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+        .sheet {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            /* Romantic Modal Gradient */
+            background: linear-gradient(to bottom, #4c0519, #2e020e);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px 30px 0 0;
+            padding: 30px 24px;
+            padding-bottom: max(30px, env(safe-area-inset-bottom));
+            transform: translateY(110%);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 101;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
         }
+
+        .modal-overlay.active .sheet { transform: translateY(0); }
 
         .category-badge {
-            background: var(--accent);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
             display: inline-block;
+            background: rgba(251, 113, 133, 0.15); /* Soft Pink Badge */
+            color: #fca5a5;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(251, 113, 133, 0.3);
         }
 
-        .question-text { font-size: 1.3rem; line-height: 1.5; margin-bottom: 30px; font-weight: 500;}
+        .q-text {
+            font-size: 1.5rem;
+            line-height: 1.5;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
 
-        .btn {
-            background: var(--primary);
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            padding: 12px 0;
+            padding: 18px;
             width: 100%;
-            border-radius: 12px;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+        }
+        
+        .btn-close-text {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
         }
 
-        /* Desktop Adjustments */
-        @media (min-width: 769px) {
-            .dashboard-container { grid-template-columns: 250px 1fr; }
-            .sidebar { display: flex; height: 100vh; position: sticky; top: 0; flex-direction: column; }
-            .header { display: none; } /* Use sidebar on desktop */
+        /* --- Confetti Animation --- */
+        .confetti {
+            position: fixed;
+            width: 8px; height: 8px;
+            top: -10px;
+            z-index: 200;
+            pointer-events: none;
+            animation: fall linear forwards;
         }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        <!-- Sidebar (Desktop) -->
-        <aside class="sidebar">
-            <h2 style="color: var(--primary);">❤️ Connection</h2>
-            <div style="margin-top: 20px;">
-                <p>Progress: <span id="deskProgress">0%</span></p>
-                <div style="background: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
-                    <div id="deskBar" style="width: 0%; height: 100%; background: var(--primary);"></div>
-                </div>
-            </div>
-            <button onclick="resetDashboard()" style="margin-top: auto; padding: 10px; background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 8px; cursor: pointer;">Reset Game</button>
-        </aside>
+    <div class="ambient-bg"></div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Mobile Header -->
-            <div class="header">
-                <strong>Question Game</strong>
-                <span id="mobProgress" style="font-size: 0.9rem; color: var(--primary); font-weight: bold;">0/40</span>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="brand">
+            <div class="logo-placeholder">
+                <i class="fa-solid fa-heart"></i>
             </div>
+            <span>Connection Lab</span>
+        </div>
+        <div class="progress-pill">
+            <span id="progressText">0/40</span>
+        </div>
+    </header>
 
-            <div class="game-grid" id="grid">
-                <!-- Grid Items JS -->
-            </div>
-            
-             <div style="text-align: center; margin-top: 30px; opacity: 0.7;">
-                <button onclick="resetDashboard()" style="background: transparent; border: none; color: #ef4444; font-size: 0.8rem; text-decoration: underline;">Reset Progress</button>
-            </div>
-        </main>
+    <!-- Controls -->
+    <div class="controls-area">
+        <button class="btn-spin" id="spinBtn" onclick="spinRoulette()">
+            <i class="fa-solid fa-arrows-rotate"></i> Spin Random
+        </button>
     </div>
 
-    <!-- Question Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-card">
-            <div class="category-badge" id="mCategory">Topic</div>
-            <h3 id="mNumber" style="color: var(--primary); margin: 0 0 10px 0;">#</h3>
-            <p class="question-text" id="mText">...</p>
-            <button class="btn" onclick="closeModal()">Mark as Done</button>
-            <button onclick="closeModalOnly()" style="background: transparent; border: none; color: var(--text-muted); margin-top: 15px; font-size: 0.9rem;">Close (Don't Mark)</button>
+    <!-- Main Grid -->
+    <div class="container">
+        <div class="grid" id="grid"></div>
+        
+        <!-- Smart Reset Button -->
+        <button id="resetBtn" class="btn-reset" onclick="handleReset()">
+            <i class="fa-solid fa-rotate-right"></i> Start Over
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="overlay" onclick="closeModalOnly()">
+        <div class="sheet" onclick="event.stopPropagation()">
+            <div style="text-align: center;">
+                <div style="font-size: 0.9rem; color: #fda4af; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px;" id="mNumber">#</div>
+                <div class="category-badge" id="mCategory">Topic</div>
+                <div class="q-text" id="mText">...</div>
+            </div>
+            <button class="btn-primary" onclick="markAsDone()">
+                <i class="fa-solid fa-check"></i> Mark as Done
+            </button>
+            <button class="btn-close-text" onclick="closeModalOnly()">Close</button>
         </div>
     </div>
 
     <script>
+        // --- Database ---
         const db = [
-            { id: 1, cat: "Personality", q: "በህይወትሽ በጣም ደስተኛ የሚያደርግሽ ነገር ምንድን ነው?" },
-            { id: 2, cat: "Personality", q: "በራስሽ በጣም የምትኮሪበት ነገር ምንድን ነው?" },
-            { id: 3, cat: "Personality", q: "ሰዎች ስለ አንቺ አብዛኛው ጊዜ በተሳሳተ መንገድ የሚረዱት ነገር ምንድን ነው?" },
-            { id: 4, cat: "Personality", q: "ህይወት ፈታኝ በሚሆንበት ጊዜ ወደፊት እንድትቀጥይ የሚያበረታታሽ ምንድን ነው?" },
-            { id: 5, cat: "Personality", q: "ውሳኔ ስትወስኚ በስሜት ነው ወይስ በምክንያታዊነት ትመሪዋለሽ?" },
-            { id: 6, cat: "Love", q: "ጤናማ ግንኙነት በአንቺ እይታ ምን ይመስላል?" },
-            { id: 7, cat: "Love", q: "በምን አይነት ሁኔታ ነው በጣም እንደተወደድሽ የሚሰማሽ?" },
+            { id: 1, cat: "Personality", q: "በህይወትህ/ሽ በጣም ደስተኛ የሚያደርግህ/ሽ ነገር ምንድን ነው?" },
+            { id: 2, cat: "Personality", q: "በራስህ/ሽ በጣም የምትኮራበት/ሪበት ነገር ምንድን ነው?" },
+            { id: 3, cat: "Personality", q: "ሰዎች ስለ አንተ/ቺ አብዛኛው ጊዜ በተሳሳተ መንገድ የሚረዱት ነገር ምንድን ነው?" },
+            { id: 4, cat: "Personality", q: "ህይወት ፈታኝ በሚሆንበት ጊዜ ወደፊት እንድትቀጥል/ይ የሚያበረታታህ/ሽ ምንድን ነው?" },
+            { id: 5, cat: "Personality", q: "ውሳኔ አሰጣጥህ/ሽ እንዴት ነው? በስሜት ወይስ በምክንያት?" },
+            { id: 6, cat: "Love", q: "ጤናማ ግንኙነት በአንተ/ቺ እይታ ምን ይመስላል?" },
+            { id: 7, cat: "Love", q: "በጣም እንደተወደድክ/ሽ የሚሰማህ/ሽ በምን አይነት ሁኔታ ነው?" },
             { id: 8, cat: "Love", q: "በአንድ ግንኙነት ውስጥ በፍጹም የማይታለፍ ነገር ምንድን ነው?" },
-            { id: 9, cat: "Love", q: "አለመግባባቶች ሲፈጠሩ አብዛኛውን ጊዜ እንዴት ነው የምታስተናግጃቸው?" },
-            { id: 10, cat: "Love", q: "ፍቅር በጊዜ ሂደት እያደገ የሚመጣ ይመስልሻል ወይስ በአንዴ የሚፈጠር?" },
-            { id: 11, cat: "Depth", q: "ህይወት በአስቸጋሪ መንገድ ያስተማረሽ ትልቁ ትምህርት ምንድን ነው?" },
-            { id: 12, cat: "Depth", q: "በጭንቀት ውስጥ ስትሆኚ ራስሽን ለማረጋጋት ምን ይረዳሻል?" },
-            { id: 13, cat: "Depth", q: "አንድ ሰው በስሜትሽ ላይ ጉዳት ቢያደርስብሽ ምላሽሽ ምንድን ነው?" },
-            { id: 14, cat: "Depth", q: "በቀላሉ ይቅር ትያለሽ ወይስ ጊዜ ያስፈልግሻል?" },
-            { id: 15, cat: "Depth", q: "በትልቅነት የምትፈሪው የስሜት ስጋት ምንድን ነው?" },
-            { id: 16, cat: "Future", q: "በሚቀጥሉት ከ5 እስከ 10 ዓመታት ውስጥ ራስሽን የት ታገኚዋለሽ?" },
-            { id: 17, cat: "Future", q: "ልጅ መውለድ ትፈልጊያለሽ? ለምን?" },
-            { id: 18, cat: "Future", q: "ስኬት ላንቺ ትርጉሙ ምንድን ነው?" },
+            { id: 9, cat: "Love", q: "አለመግባባቶች ሲፈጠሩ አብዛኛውን ጊዜ እንዴት ነው የምታስተናግደው/ጂው?" },
+            { id: 10, cat: "Love", q: "ፍቅር በጊዜ ሂደት እያደገ የሚመጣ ይመስልሃል/ሻል ወይስ በአንዴ የሚፈጠር?" },
+            { id: 11, cat: "Depth", q: "ህይወት በአስቸጋሪ መንገድ ያስተማረህ/ሽ ትልቁ ትምህርት ምንድን ነው?" },
+            { id: 12, cat: "Depth", q: "ሲጨንቅህ/ሽ ራስህን/ሽን ለማረጋጋት ምን ታደርጋለህ/ያለሽ?" },
+            { id: 13, cat: "Depth", q: "አንድ ሰው በስሜትህ/ሽ ላይ ጉዳት ቢያደርስብህ/ሽ ምላሽህ/ሽ ምንድን ነው?" },
+            { id: 14, cat: "Depth", q: "በቀላሉ ይቅር ትላለህ/ያለሽ ወይስ ጊዜ ያስፈልግሃል/ሻል?" },
+            { id: 15, cat: "Depth", q: "በትልቅነት የምትፈራው/ሪው የስሜት ስጋት ምንድን ነው?" },
+            { id: 16, cat: "Future", q: "በ5-10 ዓመታት ውስጥ ራስህን/ሽን የት ታያለህ/ያለሽ?" },
+            { id: 17, cat: "Future", q: "ልጅ የመውለድ ፍላጎት አለህ/ሽ? ለምን?" },
+            { id: 18, cat: "Future", q: "ስኬት ላንተ/ቺ ትርጉሙ ምንድን ነው?" },
             { id: 19, cat: "Future", q: "በስራ እና በቤተሰብ መካከል ያለው ሚዛን ምን ያህል አስፈላጊ ነው?" },
-            { id: 20, cat: "Future", q: "ለፍቅር ወይም ለስራ ስትዪ የመኖሪያ ቦታሽን ትቀይሪያለሽ?" },
-            { id: 21, cat: "Money", q: "ገንዘብ ቆጣቢ ነሽ፣ አውጪ ወይስ ኢንቨስት የምታደርጊ?" },
-            { id: 22, cat: "Money", q: "የገንዘብ ዋስትና ላንቺ ምንድን ነው?" },
-            { id: 23, cat: "Money", q: "ጥንዶች የገንዘብ አቅማቸውን ማጣመር አለባቸው ብለሽ ታምኚያለሽ?" },
-            { id: 24, cat: "Money", q: "የፍቅር ጓደኛ ስትመርጪ የገንዘብ ጥንካሬው ምን ያህል አስፈላጊ ነው?" },
-            { id: 25, cat: "Money", q: "ያለምንም ጸጸት ገንዘብሽን የምታወጭበት አንድ ነገር ምንድን ነው?" },
-            { id: 26, cat: "Values", q: "በህይወትሽ ትልቁን ቦታ የምትሰጪያቸው 3 እሴቶች ምንድን ናቸው?" },
-            { id: 27, cat: "Values", q: "ሃይማኖት ወይም መንፈሳዊነት በህይወትሽ ውስጥ ምን ያህል ቦታ አለው?" },
-            { id: 28, cat: "Values", q: "ከኋላሽ ምን አይነት አሻራ ጥለሽ ማለፍ ትፈልጊያለሽ?" },
-            { id: 29, cat: "Values", q: "ስታድጊ ባህሪሽን በመቅረጽ ረገድ ትልቁን ተጽዕኖ ያሳደረው ማን ነው?" },
-            { id: 30, cat: "Values", q: "ላንቺ ታማኝነት ማለት ምን ማለት ነው?" },
-            { id: 31, cat: "Fun", q: "የምታልሚው የጉዞ መዝናኛ የት ነው?" },
-            { id: 32, cat: "Fun", q: "ቤትሽ መዋል ይሻልሻል ወይስ ውጪ ወጥቶ አዳዲስ ነገሮችን መሞከር?" },
-            { id: 33, cat: "Fun", q: "ምን አይነት ህይወት ቢኖርሽ ነው ሙሉ እንደሆንሽ የሚሰማሽ?" },
-            { id: 34, cat: "Fun", q: "ካለፈ ህይወትሽ አንድ ነገር መቀየር ብትችዪ ትቀይሪ ነበር?" },
-            { id: 35, cat: "Fun", q: "ከምንም በላይ የሚያስቅሽ ነገር ምንድን ነው?" },
-            { id: 36, cat: "Intimacy", q: "ለምትወዳቸው ሰዎች ፍቅርሽን እንዴት ነው የምትገልጪላቸው?" },
-            { id: 37, cat: "Intimacy", q: "የፍቅር አጋር በህይወትሽ ውስጥ ምን አይነት ሚና ሊኖረው ይገባል?" },
-            { id: 38, cat: "Intimacy", q: "በአንድ ግንኙነት ውስጥ ክብር ማለት ላንቺ ትርጉሙ ምንድን ነው?" },
-            { id: 39, cat: "Intimacy", q: "አብሮ ማደግ የሚለው ቃል ላንቺ ትርጉሙ ምንድን ነው?" },
-            { id: 40, cat: "Intimacy", q: "በስተርጅናሽ ጎንሽ እንዲሆን የምትፈልጊው ምን አይነት አጋር ነው?" }
+            { id: 20, cat: "Future", q: "ለፍቅር ወይም ለስራ ስትል/ይ የመኖሪያ ቦታህን/ሽን ትቀይራለህ/ሪያለሽ?" },
+            { id: 21, cat: "Money", q: "ገንዘብ አጠቃቀምህ/ሽ እንዴት ነው? ቆጣቢ፣ አውጪ ወይስ ኢንቨስተር?" },
+            { id: 22, cat: "Money", q: "የገንዘብ ዋስትና ላንተ/ቺ ምንድን ነው?" },
+            { id: 23, cat: "Money", q: "ጥንዶች የገንዘብ አቅማቸውን ማጣመር አለባቸው ብለህ/ሽ ታምናለህ/ኚያለሽ?" },
+            { id: 24, cat: "Money", q: "የፍቅር ጓደኛ ስትመርጥ/ጪ የገንዘብ ጥንካሬው ምን ያህል አስፈላጊ ነው?" },
+            { id: 25, cat: "Money", q: "ያለምንም ጸጸት ገንዘብህን/ሽን የምታወጣበት/ጪበት አንድ ነገር ምንድን ነው?" },
+            { id: 26, cat: "Values", q: "በህይወትህ/ሽ ትልቁን ቦታ የምትሰጣቸው/ጪያቸው 3 እሴቶች ምንድን ናቸው?" },
+            { id: 27, cat: "Values", q: "ሃይማኖት ወይም መንፈሳዊነት በህይወትህ/ሽ ውስጥ ምን ያህል ቦታ አለው?" },
+            { id: 28, cat: "Values", q: "ከኋላህ/ሽ ምን አይነት አሻራ ጥለህ/ሽ ማለፍ ትፈልጋለህ/ጊያለሽ?" },
+            { id: 29, cat: "Values", q: "ስታድግ/ጊ ባህሪህን/ሽን በመቅረጽ ረገድ ትልቁን ተጽዕኖ ያሳደረው ማን ነው?" },
+            { id: 30, cat: "Values", q: "ላንተ/ቺ ታማኝነት ማለት ምን ማለት ነው?" },
+            { id: 31, cat: "Fun", q: "የምታልመው/ሚው የጉዞ መዝናኛ የት ነው?" },
+            { id: 32, cat: "Fun", q: "ቤት መዋል ይሻልሃል/ሻል ወይስ ውጪ ወጥቶ አዳዲስ ነገሮችን መሞከር?" },
+            { id: 33, cat: "Fun", q: "ምን አይነት ህይወት ቢኖርህ/ሽ ነው ሙሉ (Fulfilled) እንደሆንክ/ሽ የሚሰማህ/ሽ?" },
+            { id: 34, cat: "Fun", q: "ካለፈ ህይወትህ/ሽ አንድ ነገር መቀየር ብትችል/ይ ትቀይር/ሪ ነበር?" },
+            { id: 35, cat: "Fun", q: "ከምንም በላይ የሚያስቅህ/ሽ ነገር ምንድን ነው?" },
+            { id: 36, cat: "Intimacy", q: "ለምትወዳቸው ሰዎች ፍቅርህን/ሽን እንዴት ነው የምትገልጸው/ጪው?" },
+            { id: 37, cat: "Intimacy", q: "የፍቅር አጋር በህይወትህ/ሽ ውስጥ ምን አይነት ሚና ሊኖረው ይገባል?" },
+            { id: 38, cat: "Intimacy", q: "በአንድ ግንኙነት ውስጥ ክብር ማለት ላንተ/ቺ ትርጉሙ ምንድን ነው?" },
+            { id: 39, cat: "Intimacy", q: "አብሮ ማደግ የሚለው ቃል ላንተ/ቺ ትርጉሙ ምንድን ነው?" },
+            { id: 40, cat: "Intimacy", q: "በስተርጅናህ/ሽ ጎንህ/ሽ እንዲሆን የምትፈልገው/ጊው ምን አይነት አጋር ነው?" }
         ];
 
+        // --- State ---
         let usedIds = JSON.parse(localStorage.getItem('dash_used_v2')) || [];
         const gridEl = document.getElementById('grid');
-        const modal = document.getElementById('modal');
-        let currentActiveId = null;
+        const overlay = document.getElementById('overlay');
+        const spinBtn = document.getElementById('spinBtn');
+        let currentId = null;
+        let isSpinning = false;
+        let resetTimeout;
 
         function init() {
             renderGrid();
-            updateStats();
+            updateProgress();
         }
 
         function renderGrid() {
             gridEl.innerHTML = '';
-            db.forEach(item => {
+            db.forEach((item, index) => {
                 const el = document.createElement('div');
-                el.className = `grid-item ${usedIds.includes(item.id) ? 'used' : ''}`;
-                el.innerText = item.id;
-                el.onclick = () => openModal(item.id);
+                el.className = `card ${usedIds.includes(item.id) ? 'used' : ''}`;
+                el.textContent = item.id;
+                
+                // Entrance Stagger Animation
+                el.style.animationDelay = `${index * 30}ms`;
+                
+                el.onclick = () => { if(!isSpinning) openModal(item.id); };
                 gridEl.appendChild(el);
             });
         }
 
-        function openModal(id) {
-            currentActiveId = id;
-            const data = db.find(x => x.id === id);
-            document.getElementById('mNumber').innerText = `Question ${id}`;
-            document.getElementById('mText').innerText = data.q;
-            document.getElementById('mCategory').innerText = data.cat;
-            modal.classList.add('open');
+        // --- Roulette Logic ---
+        function spinRoulette() {
+            const available = db.filter(item => !usedIds.includes(item.id));
+            if (available.length === 0) {
+                alert("All questions answered! Reset to play again.");
+                return;
+            }
+            
+            isSpinning = true;
+            spinBtn.classList.add('spinning');
+            
+            let counter = 0;
+            let speed = 50;
+            let lastHighlight = null;
+            const jumps = 20;
+
+            function step() {
+                if (lastHighlight) {
+                    const prevEl = gridEl.children[lastHighlight.id - 1];
+                    if(prevEl) prevEl.classList.remove('highlight');
+                }
+
+                const randomItem = available[Math.floor(Math.random() * available.length)];
+                const el = gridEl.children[randomItem.id - 1];
+                el.classList.add('highlight');
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                lastHighlight = randomItem;
+
+                counter++;
+                
+                if (counter < jumps) {
+                    if (counter > jumps - 5) speed += 60;
+                    setTimeout(step, speed);
+                } else {
+                    setTimeout(() => {
+                        el.classList.remove('highlight');
+                        openModal(randomItem.id);
+                        isSpinning = false;
+                        spinBtn.classList.remove('spinning');
+                    }, 500);
+                }
+            }
+            step();
         }
 
-        function closeModal() {
-            if (currentActiveId && !usedIds.includes(currentActiveId)) {
-                usedIds.push(currentActiveId);
-                localStorage.setItem('dash_used_v2', JSON.stringify(usedIds));
-            }
-            modal.classList.remove('open');
-            renderGrid();
-            updateStats();
+        function openModal(id) {
+            currentId = id;
+            const data = db.find(x => x.id === id);
+            document.getElementById('mCategory').textContent = data.cat;
+            document.getElementById('mNumber').textContent = `QUESTION ${id}`;
+            document.getElementById('mText').textContent = data.q;
+            overlay.classList.add('active');
+            if (navigator.vibrate) navigator.vibrate(15);
         }
 
         function closeModalOnly() {
-            modal.classList.remove('open');
+            overlay.classList.remove('active');
         }
 
-        function updateStats() {
-            const count = usedIds.length;
-            const pct = Math.round((count / 40) * 100);
-            document.getElementById('mobProgress').innerText = `${count}/40`;
-            if(document.getElementById('deskProgress')) {
-                document.getElementById('deskProgress').innerText = `${pct}%`;
-                document.getElementById('deskBar').style.width = `${pct}%`;
+        function markAsDone() {
+            if (currentId && !usedIds.includes(currentId)) {
+                usedIds.push(currentId);
+                localStorage.setItem('dash_used_v2', JSON.stringify(usedIds));
+                const card = gridEl.children[currentId - 1];
+                card.classList.add('used');
+                updateProgress();
+                triggerConfetti(); // Trigger Confetti
+            }
+            closeModalOnly();
+        }
+
+        function updateProgress() {
+            document.getElementById('progressText').textContent = `${usedIds.length}/40`;
+        }
+
+        // --- Confetti Effect (Updated colors for theme) ---
+        function triggerConfetti() {
+            const colors = ['#e11d48', '#fb7185', '#10b981', '#ffffff', '#ffd700'];
+            for(let i=0; i<30; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                document.body.appendChild(conf);
+                
+                setTimeout(() => conf.remove(), 3000);
             }
         }
 
-        function resetDashboard() {
-            if(confirm("Reset game progress?")) {
-                localStorage.removeItem('dash_used_v2');
+        // --- Smart Reset (Double Tap) ---
+        function handleReset() {
+            const btn = document.getElementById('resetBtn');
+            
+            if (btn.classList.contains('confirming')) {
                 usedIds = [];
-                init();
+                localStorage.removeItem('dash_used_v2');
+                renderGrid();
+                updateProgress();
+                
+                btn.classList.remove('confirming');
+                btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+                
+            } else {
+                btn.classList.add('confirming');
+                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tap again to confirm';
+                clearTimeout(resetTimeout);
+                resetTimeout = setTimeout(() => {
+                    btn.classList.remove('confirming');
+                    btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Start Over';
+                }, 3000);
             }
         }
+
         init();
     </script>
 </body>
 </html>
-
-
